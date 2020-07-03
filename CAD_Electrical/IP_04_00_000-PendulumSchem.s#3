@@ -2051,6 +2051,8 @@ In this library the device names are the same as the pin names of the symbols, t
 <part name="U$4" library="IPcustomDevices" deviceset="PRESSURE_SENSOR" device=""/>
 <part name="GND8" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
 <part name="GND9" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
+<part name="P+6" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="+5V" device=""/>
+<part name="P+7" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="+5V" device=""/>
 </parts>
 <sheets>
 <sheet>
@@ -2144,6 +2146,12 @@ In this library the device names are the same as the pin names of the symbols, t
 <instance part="GND9" gate="1" x="121.92" y="38.1" smashed="yes" rot="R90">
 <attribute name="VALUE" x="124.46" y="35.56" size="1.778" layer="96" rot="R90"/>
 </instance>
+<instance part="P+6" gate="1" x="78.74" y="43.18" smashed="yes">
+<attribute name="VALUE" x="76.2" y="38.1" size="1.778" layer="96" rot="R90"/>
+</instance>
+<instance part="P+7" gate="1" x="111.76" y="43.18" smashed="yes">
+<attribute name="VALUE" x="109.22" y="38.1" size="1.778" layer="96" rot="R90"/>
+</instance>
 </instances>
 <busses>
 </busses>
@@ -2229,6 +2237,16 @@ In this library the device names are the same as the pin names of the symbols, t
 <pinref part="U$1" gate="G$1" pin="VIN"/>
 <pinref part="P+1" gate="1" pin="+5V"/>
 <wire x1="157.48" y1="144.78" x2="157.48" y2="149.86" width="0.1524" layer="91"/>
+</segment>
+<segment>
+<pinref part="U$3" gate="G$1" pin="VCC"/>
+<pinref part="P+6" gate="1" pin="+5V"/>
+<wire x1="78.74" y1="35.56" x2="78.74" y2="40.64" width="0.1524" layer="91"/>
+</segment>
+<segment>
+<pinref part="U$4" gate="G$1" pin="VCC"/>
+<pinref part="P+7" gate="1" pin="+5V"/>
+<wire x1="111.76" y1="35.56" x2="111.76" y2="40.64" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="N$7" class="0">
