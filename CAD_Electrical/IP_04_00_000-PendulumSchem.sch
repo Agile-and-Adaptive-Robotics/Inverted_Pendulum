@@ -147,6 +147,8 @@
 <layer number="229" name="229bmp" color="7" fill="1" visible="yes" active="yes"/>
 <layer number="230" name="230bmp" color="7" fill="1" visible="yes" active="yes"/>
 <layer number="231" name="231bmp" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="232" name="Eagle3D_PG2" color="7" fill="1" visible="no" active="no"/>
+<layer number="233" name="Eagle3D_PG3" color="7" fill="1" visible="no" active="no"/>
 <layer number="248" name="Housing" color="7" fill="1" visible="yes" active="yes"/>
 <layer number="249" name="Edge" color="7" fill="1" visible="yes" active="yes"/>
 <layer number="250" name="Descript" color="3" fill="1" visible="no" active="no"/>
@@ -1644,87 +1646,75 @@ LETTER landscape</description>
 </library>
 <library name="IPcustomDevices">
 <packages>
-<package name="IMU">
-<pad name="P$1" x="-2.54" y="5.08" drill="0.6" shape="square"/>
-<pad name="P$2" x="-2.54" y="2.54" drill="0.6" shape="square"/>
-<pad name="P$3" x="-2.54" y="0" drill="0.6" shape="square"/>
-<pad name="P$4" x="-2.54" y="-2.54" drill="0.6" shape="square"/>
-<pad name="P$5" x="-2.54" y="-5.08" drill="0.6" shape="square"/>
-<pad name="P$6" x="-2.54" y="-7.62" drill="0.6" shape="square"/>
-<pad name="P$7" x="6.35" y="3.81" drill="0.6" shape="square"/>
-<pad name="P$8" x="6.35" y="1.27" drill="0.6" shape="square"/>
-<pad name="P$9" x="6.35" y="-1.27" drill="0.6" shape="square"/>
-<pad name="P$10" x="6.35" y="-3.81" drill="0.6" shape="square"/>
-<wire x1="-3.81" y1="6.35" x2="-3.81" y2="-8.89" width="0.127" layer="21"/>
-<wire x1="-3.81" y1="-8.89" x2="7.62" y2="-8.89" width="0.127" layer="21"/>
-<wire x1="7.62" y1="-8.89" x2="7.62" y2="6.35" width="0.127" layer="21"/>
-<wire x1="7.62" y1="6.35" x2="-3.81" y2="6.35" width="0.127" layer="21"/>
-<hole x="-2.54" y="5.08" drill="0.35"/>
-<hole x="-2.54" y="2.54" drill="0.35"/>
-<hole x="-2.54" y="0" drill="0.35"/>
-<hole x="-2.54" y="-2.54" drill="0.35"/>
-<hole x="-2.54" y="-5.08" drill="0.35"/>
-<hole x="-2.54" y="-7.62" drill="0.35"/>
-<hole x="6.35" y="-3.81" drill="0.35"/>
-<hole x="6.35" y="-1.27" drill="0.35"/>
-<hole x="6.35" y="1.27" drill="0.35"/>
-<hole x="6.35" y="3.81" drill="0.35"/>
+<package name="PRESSURE_SENSOR">
+<pad name="P$1" x="0" y="0" drill="0.6"/>
+<pad name="P$2" x="0" y="2.54" drill="0.6"/>
+<pad name="P$3" x="0" y="5.08" drill="0.6"/>
+<pad name="P$4" x="0" y="7.62" drill="0.6"/>
+<pad name="P$5" x="0" y="10.16" drill="0.6"/>
+<pad name="P$6" x="0" y="12.7" drill="0.6" shape="square"/>
+<wire x1="-6.35" y1="16.964" x2="-6.35" y2="-4.264" width="0.127" layer="21"/>
+<wire x1="-6.35" y1="-4.264" x2="1.91" y2="-4.264" width="0.127" layer="21"/>
+<wire x1="1.91" y1="-4.264" x2="1.91" y2="16.964" width="0.127" layer="21"/>
+<wire x1="1.91" y1="16.964" x2="-6.35" y2="16.964" width="0.127" layer="21"/>
 </package>
 <package name="TRANSISTOR_ARRAY">
 <pad name="P$1" x="0" y="0" drill="0.6" shape="square"/>
-<pad name="P$2" x="2.54" y="0" drill="0.6" shape="square"/>
-<pad name="P$3" x="5.08" y="0" drill="0.6" shape="square"/>
-<pad name="P$4" x="7.62" y="0" drill="0.6" shape="square"/>
-<pad name="P$5" x="10.16" y="0" drill="0.6" shape="square"/>
-<pad name="P$6" x="12.7" y="0" drill="0.6" shape="square"/>
-<pad name="P$7" x="15.24" y="0" drill="0.6" shape="square"/>
-<pad name="P$8" x="17.78" y="0" drill="0.6" shape="square"/>
-<pad name="P$9" x="20.32" y="0" drill="0.6" shape="square"/>
-<pad name="P$10" x="0" y="-5.08" drill="0.6" shape="square"/>
-<pad name="P$11" x="2.54" y="-5.08" drill="0.6" shape="square"/>
-<pad name="P$12" x="5.08" y="-5.08" drill="0.6" shape="square"/>
-<pad name="P$13" x="7.62" y="-5.08" drill="0.6" shape="square"/>
-<pad name="P$14" x="10.16" y="-5.08" drill="0.6" shape="square"/>
-<pad name="P$15" x="12.7" y="-5.08" drill="0.6" shape="square"/>
-<pad name="P$16" x="15.24" y="-5.08" drill="0.6" shape="square"/>
-<pad name="P$17" x="17.78" y="-5.08" drill="0.6" shape="square"/>
-<pad name="P$18" x="20.32" y="-5.08" drill="0.6" shape="square"/>
-<wire x1="-1.27" y1="1.27" x2="-1.27" y2="-6.35" width="0.1524" layer="21"/>
-<wire x1="-1.27" y1="-6.35" x2="21.59" y2="-6.35" width="0.1524" layer="21"/>
-<wire x1="21.59" y1="-6.35" x2="21.59" y2="1.27" width="0.1524" layer="21"/>
-<wire x1="21.59" y1="1.27" x2="-1.27" y2="1.27" width="0.1524" layer="21"/>
+<pad name="P$2" x="0" y="-2.54" drill="0.6"/>
+<pad name="P$3" x="0" y="-5.08" drill="0.6"/>
+<pad name="P$4" x="0" y="-7.62" drill="0.6"/>
+<pad name="P$5" x="0" y="-10.16" drill="0.6"/>
+<pad name="P$6" x="0" y="-12.7" drill="0.6"/>
+<pad name="P$7" x="0" y="-15.24" drill="0.6"/>
+<pad name="P$8" x="0" y="-17.78" drill="0.6"/>
+<pad name="P$9" x="0" y="-20.32" drill="0.6"/>
+<pad name="P$10" x="7.62" y="0" drill="0.6"/>
+<pad name="P$11" x="7.62" y="-2.54" drill="0.6"/>
+<pad name="P$12" x="7.62" y="-5.08" drill="0.6"/>
+<pad name="P$13" x="7.62" y="-7.62" drill="0.6"/>
+<pad name="P$14" x="7.62" y="-10.16" drill="0.6"/>
+<pad name="P$15" x="7.62" y="-12.7" drill="0.6"/>
+<pad name="P$16" x="7.62" y="-15.24" drill="0.6"/>
+<pad name="P$17" x="7.62" y="-17.78" drill="0.6"/>
+<pad name="P$18" x="7.62" y="-20.32" drill="0.6"/>
+<wire x1="0.5" y1="1.05" x2="0.5" y2="-21.45" width="0.127" layer="21"/>
+<wire x1="0.5" y1="-21.45" x2="7.15" y2="-21.45" width="0.127" layer="21"/>
+<wire x1="7.15" y1="-21.45" x2="7.15" y2="1.05" width="0.127" layer="21"/>
+<wire x1="7.15" y1="1.05" x2="7.2" y2="1.05" width="0.127" layer="21"/>
+<wire x1="7.15" y1="1.05" x2="0.5" y2="1.05" width="0.127" layer="21"/>
+<wire x1="0.5" y1="1.05" x2="0.5" y2="1.1" width="0.127" layer="21"/>
 </package>
-<package name="PRESSURE_SENSOR">
-<pad name="P$1" x="0" y="0" drill="0.6" shape="square"/>
-<pad name="P$2" x="0" y="2.54" drill="0.6" shape="square"/>
-<pad name="P$3" x="0" y="5.08" drill="0.6" shape="square"/>
-<pad name="P$4" x="0" y="7.62" drill="0.6" shape="square"/>
-<pad name="P$5" x="0" y="10.16" drill="0.6" shape="square"/>
-<pad name="P$6" x="0" y="12.7" drill="0.6" shape="square"/>
-<wire x1="-2.54" y1="13.97" x2="-2.54" y2="-1.27" width="0.127" layer="21"/>
-<wire x1="-2.54" y1="-1.27" x2="2.54" y2="-1.27" width="0.127" layer="21"/>
-<wire x1="2.54" y1="-1.27" x2="2.54" y2="13.97" width="0.127" layer="21"/>
-<wire x1="2.54" y1="13.97" x2="-2.54" y2="13.97" width="0.127" layer="21"/>
+<package name="IMU">
+<pad name="AI2" x="0" y="0" drill="0.6"/>
+<pad name="AI1" x="2.54" y="0" drill="0.6"/>
+<pad name="GI2" x="5.08" y="0" drill="0.6"/>
+<pad name="GI1" x="7.62" y="0" drill="0.6"/>
+<pad name="GND" x="2.54" y="-15.24" drill="0.6" shape="square"/>
+<pad name="3VO" x="0" y="-15.24" drill="0.6"/>
+<pad name="VIN" x="-2.54" y="-15.24" drill="0.6"/>
+<pad name="SCL" x="5.08" y="-15.24" drill="0.6"/>
+<pad name="SDA" x="7.62" y="-15.24" drill="0.6"/>
+<pad name="RST" x="10.18" y="-15.24" drill="0.6"/>
+<wire x1="-10.16" y1="2.54" x2="17.78" y2="2.54" width="0.127" layer="21"/>
+<wire x1="17.78" y1="2.54" x2="17.78" y2="-17.49" width="0.127" layer="21"/>
+<wire x1="17.78" y1="-17.49" x2="-10.16" y2="-17.49" width="0.127" layer="21"/>
+<wire x1="-10.16" y1="-17.49" x2="-10.16" y2="2.54" width="0.127" layer="21"/>
 </package>
 </packages>
 <symbols>
-<symbol name="IMU">
-<pin name="VIN" x="-30.48" y="15.24" length="middle"/>
-<pin name="3VO" x="-30.48" y="10.16" length="middle"/>
-<pin name="GND" x="-30.48" y="5.08" length="middle"/>
-<pin name="SCL" x="-30.48" y="0" length="middle"/>
-<pin name="SDA" x="-30.48" y="-5.08" length="middle"/>
-<pin name="RST" x="-30.48" y="-10.16" length="middle"/>
-<pin name="AI2" x="-2.54" y="15.24" length="middle" rot="R180"/>
-<pin name="AI1" x="-2.54" y="7.62" length="middle" rot="R180"/>
-<pin name="GI2" x="-2.54" y="0" length="middle" rot="R180"/>
-<pin name="GI1" x="-2.54" y="-7.62" length="middle" rot="R180"/>
-<wire x1="-25.4" y1="17.78" x2="-25.4" y2="-12.7" width="0.254" layer="94"/>
-<wire x1="-25.4" y1="-12.7" x2="-7.62" y2="-12.7" width="0.254" layer="94"/>
-<wire x1="-7.62" y1="-12.7" x2="-7.62" y2="17.78" width="0.254" layer="94"/>
-<wire x1="-7.62" y1="17.78" x2="-25.4" y2="17.78" width="0.254" layer="94"/>
-<text x="-20.32" y="17.78" size="1.778" layer="95">&gt;NAME</text>
-<text x="-20.32" y="-15.24" size="1.778" layer="96">&gt;VALUE</text>
+<symbol name="PRESSURE_SENSOR">
+<pin name="V_OUT" x="-35.56" y="20.32" length="middle"/>
+<pin name="GND" x="-35.56" y="17.78" length="middle"/>
+<pin name="VCC" x="-35.56" y="15.24" length="middle"/>
+<pin name="V1" x="-35.56" y="12.7" length="middle"/>
+<pin name="V2" x="-35.56" y="10.16" length="middle"/>
+<pin name="V_EX" x="-35.56" y="7.62" length="middle"/>
+<wire x1="-30.48" y1="22.86" x2="-30.48" y2="5.08" width="0.254" layer="94"/>
+<wire x1="-30.48" y1="5.08" x2="-20.32" y2="5.08" width="0.254" layer="94"/>
+<wire x1="-20.32" y1="5.08" x2="-20.32" y2="22.86" width="0.254" layer="94"/>
+<wire x1="-20.32" y1="22.86" x2="-30.48" y2="22.86" width="0.254" layer="94"/>
+<text x="-30.48" y="22.86" size="1.778" layer="95">&gt;NAME</text>
+<text x="-30.48" y="2.54" size="1.778" layer="96">&gt;VALUE</text>
 </symbol>
 <symbol name="TRANSISTOR_ARRAY">
 <pin name="I1" x="-30.48" y="17.78" length="middle"/>
@@ -1752,39 +1742,39 @@ LETTER landscape</description>
 <text x="-20.32" y="22.86" size="1.778" layer="95">&gt;NAME</text>
 <text x="-20.32" y="-30.48" size="1.778" layer="96">&gt;VALUE</text>
 </symbol>
-<symbol name="PRESSURE_SENSOR">
-<pin name="V_OUT" x="-35.56" y="20.32" length="middle"/>
-<pin name="GND" x="-35.56" y="17.78" length="middle"/>
-<pin name="VCC" x="-35.56" y="15.24" length="middle"/>
-<pin name="V1" x="-35.56" y="12.7" length="middle"/>
-<pin name="V2" x="-35.56" y="10.16" length="middle"/>
-<pin name="V_EX" x="-35.56" y="7.62" length="middle"/>
-<wire x1="-30.48" y1="22.86" x2="-30.48" y2="5.08" width="0.254" layer="94"/>
-<wire x1="-30.48" y1="5.08" x2="-20.32" y2="5.08" width="0.254" layer="94"/>
-<wire x1="-20.32" y1="5.08" x2="-20.32" y2="22.86" width="0.254" layer="94"/>
-<wire x1="-20.32" y1="22.86" x2="-30.48" y2="22.86" width="0.254" layer="94"/>
-<text x="-30.48" y="22.86" size="1.778" layer="95">&gt;NAME</text>
-<text x="-30.48" y="2.54" size="1.778" layer="96">&gt;VALUE</text>
+<symbol name="IMU">
+<pin name="VIN" x="-30.48" y="15.24" length="middle"/>
+<pin name="3VO" x="-30.48" y="10.16" length="middle"/>
+<pin name="GND" x="-30.48" y="5.08" length="middle"/>
+<pin name="SCL" x="-30.48" y="0" length="middle"/>
+<pin name="SDA" x="-30.48" y="-5.08" length="middle"/>
+<pin name="RST" x="-30.48" y="-10.16" length="middle"/>
+<pin name="AI2" x="-2.54" y="15.24" length="middle" rot="R180"/>
+<pin name="AI1" x="-2.54" y="7.62" length="middle" rot="R180"/>
+<pin name="GI2" x="-2.54" y="0" length="middle" rot="R180"/>
+<pin name="GI1" x="-2.54" y="-7.62" length="middle" rot="R180"/>
+<wire x1="-25.4" y1="17.78" x2="-25.4" y2="-12.7" width="0.254" layer="94"/>
+<wire x1="-25.4" y1="-12.7" x2="-7.62" y2="-12.7" width="0.254" layer="94"/>
+<wire x1="-7.62" y1="-12.7" x2="-7.62" y2="17.78" width="0.254" layer="94"/>
+<wire x1="-7.62" y1="17.78" x2="-25.4" y2="17.78" width="0.254" layer="94"/>
+<text x="-20.32" y="17.78" size="1.778" layer="95">&gt;NAME</text>
+<text x="-20.32" y="-15.24" size="1.778" layer="96">&gt;VALUE</text>
 </symbol>
 </symbols>
 <devicesets>
-<deviceset name="IMU">
+<deviceset name="PRESSURE_SENSOR">
 <gates>
-<gate name="G$1" symbol="IMU" x="-281.94" y="10.16"/>
+<gate name="G$1" symbol="PRESSURE_SENSOR" x="20.32" y="-5.08"/>
 </gates>
 <devices>
-<device name="" package="IMU">
+<device name="" package="PRESSURE_SENSOR">
 <connects>
-<connect gate="G$1" pin="3VO" pad="P$1"/>
-<connect gate="G$1" pin="AI1" pad="P$2"/>
-<connect gate="G$1" pin="AI2" pad="P$3"/>
-<connect gate="G$1" pin="GI1" pad="P$4"/>
-<connect gate="G$1" pin="GI2" pad="P$5"/>
-<connect gate="G$1" pin="GND" pad="P$6"/>
-<connect gate="G$1" pin="RST" pad="P$7"/>
-<connect gate="G$1" pin="SCL" pad="P$8"/>
-<connect gate="G$1" pin="SDA" pad="P$9"/>
-<connect gate="G$1" pin="VIN" pad="P$10"/>
+<connect gate="G$1" pin="GND" pad="P$2"/>
+<connect gate="G$1" pin="V1" pad="P$4"/>
+<connect gate="G$1" pin="V2" pad="P$5"/>
+<connect gate="G$1" pin="VCC" pad="P$3"/>
+<connect gate="G$1" pin="V_EX" pad="P$6"/>
+<connect gate="G$1" pin="V_OUT" pad="P$1"/>
 </connects>
 <technologies>
 <technology name=""/>
@@ -1824,19 +1814,23 @@ LETTER landscape</description>
 </device>
 </devices>
 </deviceset>
-<deviceset name="PRESSURE_SENSOR">
+<deviceset name="IMU">
 <gates>
-<gate name="G$1" symbol="PRESSURE_SENSOR" x="20.32" y="-5.08"/>
+<gate name="G$1" symbol="IMU" x="-281.94" y="10.16"/>
 </gates>
 <devices>
-<device name="" package="PRESSURE_SENSOR">
+<device name="" package="IMU">
 <connects>
-<connect gate="G$1" pin="GND" pad="P$2"/>
-<connect gate="G$1" pin="V1" pad="P$4"/>
-<connect gate="G$1" pin="V2" pad="P$5"/>
-<connect gate="G$1" pin="VCC" pad="P$3"/>
-<connect gate="G$1" pin="V_EX" pad="P$6"/>
-<connect gate="G$1" pin="V_OUT" pad="P$1"/>
+<connect gate="G$1" pin="3VO" pad="3VO"/>
+<connect gate="G$1" pin="AI1" pad="AI1"/>
+<connect gate="G$1" pin="AI2" pad="AI2"/>
+<connect gate="G$1" pin="GI1" pad="GI1"/>
+<connect gate="G$1" pin="GI2" pad="GI2"/>
+<connect gate="G$1" pin="GND" pad="GND"/>
+<connect gate="G$1" pin="RST" pad="RST"/>
+<connect gate="G$1" pin="SCL" pad="SCL"/>
+<connect gate="G$1" pin="SDA" pad="SDA"/>
+<connect gate="G$1" pin="VIN" pad="VIN"/>
 </connects>
 <technologies>
 <technology name=""/>
@@ -1895,23 +1889,23 @@ In this library the device names are the same as the pin names of the symbols, t
 <part name="GND1" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
 <part name="VALVE_MANIFOLD" library="pinhead" library_urn="urn:adsk.eagle:library:325" deviceset="PINHD-1X4" device="" package3d_urn="urn:adsk.eagle:package:22407/2"/>
 <part name="FRAME1" library="frames" library_urn="urn:adsk.eagle:library:229" deviceset="LETTER_L" device=""/>
-<part name="U$1" library="IPcustomDevices" deviceset="IMU" device=""/>
 <part name="P+1" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="+5V" device=""/>
 <part name="P+2" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="+5V" device=""/>
 <part name="GND3" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
 <part name="ROTARY_ENCODER" library="pinhead" library_urn="urn:adsk.eagle:library:325" deviceset="PINHD-1X5" device="" package3d_urn="urn:adsk.eagle:package:22469/2"/>
 <part name="P+5" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="+5V" device=""/>
 <part name="GND6" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
-<part name="U$2" library="IPcustomDevices" deviceset="TRANSISTOR_ARRAY" device=""/>
 <part name="GND2" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
 <part name="GND7" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
 <part name="SUPPLY2" library="supply2" library_urn="urn:adsk.eagle:library:372" deviceset="+24V" device=""/>
-<part name="U$3" library="IPcustomDevices" deviceset="PRESSURE_SENSOR" device=""/>
 <part name="U$4" library="IPcustomDevices" deviceset="PRESSURE_SENSOR" device=""/>
 <part name="GND8" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
 <part name="GND9" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
 <part name="P+6" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="+5V" device=""/>
 <part name="P+7" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="+5V" device=""/>
+<part name="U$2" library="IPcustomDevices" deviceset="TRANSISTOR_ARRAY" device=""/>
+<part name="U$1" library="IPcustomDevices" deviceset="IMU" device=""/>
+<part name="U$3" library="IPcustomDevices" deviceset="PRESSURE_SENSOR" device=""/>
 </parts>
 <sheets>
 <sheet>
@@ -1935,10 +1929,6 @@ In this library the device names are the same as the pin names of the symbols, t
 <attribute name="SHEET" x="233.68" y="1.27" size="2.54" layer="94"/>
 <attribute name="DRAWING_NAME" x="165.1" y="19.05" size="2.54" layer="94"/>
 </instance>
-<instance part="U$1" gate="G$1" x="187.96" y="129.54" smashed="yes">
-<attribute name="NAME" x="167.64" y="147.32" size="1.778" layer="95"/>
-<attribute name="VALUE" x="167.64" y="114.3" size="1.778" layer="96"/>
-</instance>
 <instance part="P+1" gate="1" x="157.48" y="152.4" smashed="yes">
 <attribute name="VALUE" x="154.94" y="147.32" size="1.778" layer="96" rot="R90"/>
 </instance>
@@ -1958,10 +1948,6 @@ In this library the device names are the same as the pin names of the symbols, t
 <instance part="GND6" gate="1" x="53.34" y="63.5" smashed="yes">
 <attribute name="VALUE" x="50.8" y="60.96" size="1.778" layer="96"/>
 </instance>
-<instance part="U$2" gate="G$1" x="180.34" y="86.36" smashed="yes">
-<attribute name="NAME" x="160.02" y="109.22" size="1.778" layer="95"/>
-<attribute name="VALUE" x="154.94" y="55.88" size="1.778" layer="96"/>
-</instance>
 <instance part="GND2" gate="1" x="187.96" y="76.2" smashed="yes">
 <attribute name="VALUE" x="185.42" y="73.66" size="1.778" layer="96"/>
 </instance>
@@ -1970,10 +1956,6 @@ In this library the device names are the same as the pin names of the symbols, t
 </instance>
 <instance part="SUPPLY2" gate="+24V" x="147.32" y="60.96" smashed="yes" rot="R90">
 <attribute name="VALUE" x="144.145" y="58.42" size="1.778" layer="96" rot="R90"/>
-</instance>
-<instance part="U$3" gate="G$1" x="63.5" y="0" smashed="yes" rot="R270">
-<attribute name="NAME" x="86.36" y="30.48" size="1.778" layer="95" rot="R270"/>
-<attribute name="VALUE" x="66.04" y="30.48" size="1.778" layer="96" rot="R270"/>
 </instance>
 <instance part="U$4" gate="G$1" x="96.52" y="-5.08" smashed="yes" rot="R270">
 <attribute name="NAME" x="119.38" y="25.4" size="1.778" layer="95" rot="R270"/>
@@ -1991,6 +1973,18 @@ In this library the device names are the same as the pin names of the symbols, t
 <instance part="P+7" gate="1" x="99.06" y="33.02" smashed="yes" rot="R90">
 <attribute name="VALUE" x="104.14" y="30.48" size="1.778" layer="96" rot="R180"/>
 </instance>
+<instance part="U$2" gate="G$1" x="180.34" y="86.36" smashed="yes">
+<attribute name="NAME" x="160.02" y="109.22" size="1.778" layer="95"/>
+<attribute name="VALUE" x="160.02" y="55.88" size="1.778" layer="96"/>
+</instance>
+<instance part="U$1" gate="G$1" x="187.96" y="129.54" smashed="yes">
+<attribute name="NAME" x="167.64" y="147.32" size="1.778" layer="95"/>
+<attribute name="VALUE" x="167.64" y="114.3" size="1.778" layer="96"/>
+</instance>
+<instance part="U$3" gate="G$1" x="63.5" y="0" smashed="yes" rot="R270">
+<attribute name="NAME" x="86.36" y="30.48" size="1.778" layer="95" rot="R270"/>
+<attribute name="VALUE" x="66.04" y="30.48" size="1.778" layer="96" rot="R270"/>
+</instance>
 </instances>
 <busses>
 </busses>
@@ -2002,9 +1996,9 @@ In this library the device names are the same as the pin names of the symbols, t
 <wire x1="88.9" y1="60.96" x2="78.74" y2="60.96" width="0.1524" layer="91"/>
 </segment>
 <segment>
-<pinref part="U$1" gate="G$1" pin="GND"/>
 <pinref part="GND3" gate="1" pin="GND"/>
 <wire x1="157.48" y1="134.62" x2="152.4" y2="134.62" width="0.1524" layer="91"/>
+<pinref part="U$1" gate="G$1" pin="GND"/>
 </segment>
 <segment>
 <pinref part="ROTARY_ENCODER" gate="A" pin="1"/>
@@ -2013,10 +2007,10 @@ In this library the device names are the same as the pin names of the symbols, t
 <wire x1="53.34" y1="71.12" x2="53.34" y2="66.04" width="0.1524" layer="91"/>
 </segment>
 <segment>
-<pinref part="U$2" gate="G$1" pin="GND"/>
 <wire x1="177.8" y1="63.5" x2="187.96" y2="63.5" width="0.1524" layer="91"/>
 <pinref part="GND7" gate="1" pin="GND"/>
 <wire x1="187.96" y1="63.5" x2="187.96" y2="60.96" width="0.1524" layer="91"/>
+<pinref part="U$2" gate="G$1" pin="GND"/>
 </segment>
 <segment>
 <pinref part="GND2" gate="1" pin="GND"/>
@@ -2025,9 +2019,9 @@ In this library the device names are the same as the pin names of the symbols, t
 <wire x1="187.96" y1="81.28" x2="195.58" y2="81.28" width="0.1524" layer="91"/>
 </segment>
 <segment>
-<pinref part="U$3" gate="G$1" pin="GND"/>
 <pinref part="GND8" gate="1" pin="GND"/>
 <wire x1="81.28" y1="35.56" x2="81.28" y2="43.18" width="0.1524" layer="91"/>
+<pinref part="U$3" gate="G$1" pin="GND"/>
 </segment>
 <segment>
 <pinref part="U$4" gate="G$1" pin="GND"/>
@@ -2049,15 +2043,15 @@ In this library the device names are the same as the pin names of the symbols, t
 <wire x1="53.34" y1="78.74" x2="53.34" y2="83.82" width="0.1524" layer="91"/>
 </segment>
 <segment>
-<pinref part="U$1" gate="G$1" pin="VIN"/>
 <pinref part="P+1" gate="1" pin="+5V"/>
 <wire x1="157.48" y1="144.78" x2="157.48" y2="149.86" width="0.1524" layer="91"/>
+<pinref part="U$1" gate="G$1" pin="VIN"/>
 </segment>
 <segment>
-<pinref part="U$3" gate="G$1" pin="VCC"/>
 <wire x1="78.74" y1="35.56" x2="78.74" y2="40.64" width="0.1524" layer="91"/>
 <pinref part="P+6" gate="1" pin="+5V"/>
 <wire x1="78.74" y1="40.64" x2="68.58" y2="40.64" width="0.1524" layer="91"/>
+<pinref part="U$3" gate="G$1" pin="VCC"/>
 </segment>
 <segment>
 <pinref part="U$4" gate="G$1" pin="VCC"/>
@@ -2068,20 +2062,20 @@ In this library the device names are the same as the pin names of the symbols, t
 </net>
 <net name="N$7" class="0">
 <segment>
-<pinref part="U$1" gate="G$1" pin="SCL"/>
 <wire x1="157.48" y1="129.54" x2="137.16" y2="129.54" width="0.1524" layer="91"/>
 <wire x1="137.16" y1="129.54" x2="137.16" y2="132.08" width="0.1524" layer="91"/>
 <pinref part="B1" gate="G$1" pin="21(SCL)"/>
 <wire x1="137.16" y1="132.08" x2="124.46" y2="132.08" width="0.1524" layer="91"/>
+<pinref part="U$1" gate="G$1" pin="SCL"/>
 </segment>
 </net>
 <net name="N$3" class="0">
 <segment>
-<pinref part="U$1" gate="G$1" pin="SDA"/>
 <wire x1="157.48" y1="124.46" x2="139.7" y2="124.46" width="0.1524" layer="91"/>
 <wire x1="139.7" y1="124.46" x2="139.7" y2="134.62" width="0.1524" layer="91"/>
 <pinref part="B1" gate="G$1" pin="20(SDA)"/>
 <wire x1="139.7" y1="134.62" x2="124.46" y2="134.62" width="0.1524" layer="91"/>
+<pinref part="U$1" gate="G$1" pin="SDA"/>
 </segment>
 </net>
 <net name="N$9" class="0">
@@ -2109,9 +2103,9 @@ In this library the device names are the same as the pin names of the symbols, t
 </net>
 <net name="+24V" class="0">
 <segment>
-<pinref part="U$2" gate="G$1" pin="VCC"/>
 <pinref part="SUPPLY2" gate="+24V" pin="+24V"/>
 <wire x1="149.86" y1="63.5" x2="149.86" y2="60.96" width="0.1524" layer="91"/>
+<pinref part="U$2" gate="G$1" pin="VCC"/>
 </segment>
 </net>
 <net name="N$6" class="0">
@@ -2119,8 +2113,8 @@ In this library the device names are the same as the pin names of the symbols, t
 <pinref part="VALVE_MANIFOLD" gate="A" pin="1"/>
 <wire x1="195.58" y1="88.9" x2="190.5" y2="88.9" width="0.1524" layer="91"/>
 <wire x1="190.5" y1="88.9" x2="190.5" y2="104.14" width="0.1524" layer="91"/>
-<pinref part="U$2" gate="G$1" pin="O1"/>
 <wire x1="190.5" y1="104.14" x2="177.8" y2="104.14" width="0.1524" layer="91"/>
+<pinref part="U$2" gate="G$1" pin="O1"/>
 </segment>
 </net>
 <net name="N$8" class="0">
@@ -2128,34 +2122,34 @@ In this library the device names are the same as the pin names of the symbols, t
 <pinref part="VALVE_MANIFOLD" gate="A" pin="2"/>
 <wire x1="195.58" y1="86.36" x2="187.96" y2="86.36" width="0.1524" layer="91"/>
 <wire x1="187.96" y1="86.36" x2="187.96" y2="99.06" width="0.1524" layer="91"/>
-<pinref part="U$2" gate="G$1" pin="O2"/>
 <wire x1="187.96" y1="99.06" x2="177.8" y2="99.06" width="0.1524" layer="91"/>
+<pinref part="U$2" gate="G$1" pin="O2"/>
 </segment>
 </net>
 <net name="N$5" class="0">
 <segment>
-<pinref part="U$2" gate="G$1" pin="I1"/>
 <wire x1="149.86" y1="104.14" x2="134.62" y2="104.14" width="0.1524" layer="91"/>
 <wire x1="134.62" y1="104.14" x2="134.62" y2="129.54" width="0.1524" layer="91"/>
 <pinref part="B1" gate="G$1" pin="22"/>
 <wire x1="134.62" y1="129.54" x2="124.46" y2="129.54" width="0.1524" layer="91"/>
+<pinref part="U$2" gate="G$1" pin="I1"/>
 </segment>
 </net>
 <net name="N$10" class="0">
 <segment>
-<pinref part="U$2" gate="G$1" pin="I2"/>
 <wire x1="149.86" y1="99.06" x2="132.08" y2="99.06" width="0.1524" layer="91"/>
 <wire x1="132.08" y1="99.06" x2="132.08" y2="127" width="0.1524" layer="91"/>
 <pinref part="B1" gate="G$1" pin="23"/>
 <wire x1="132.08" y1="127" x2="124.46" y2="127" width="0.1524" layer="91"/>
+<pinref part="U$2" gate="G$1" pin="I2"/>
 </segment>
 </net>
 <net name="N$12" class="0">
 <segment>
-<pinref part="U$3" gate="G$1" pin="V_OUT"/>
 <wire x1="83.82" y1="35.56" x2="83.82" y2="129.54" width="0.1524" layer="91"/>
 <pinref part="B1" gate="G$1" pin="A2"/>
 <wire x1="83.82" y1="129.54" x2="88.9" y2="129.54" width="0.1524" layer="91"/>
+<pinref part="U$3" gate="G$1" pin="V_OUT"/>
 </segment>
 </net>
 <net name="N$14" class="0">
