@@ -1284,11 +1284,11 @@ LETTER landscape</description>
 <packages>
 <package name="PRESSURE_SENSOR">
 <pad name="P$1" x="0" y="0" drill="0.6"/>
-<pad name="P$2" x="0" y="2.54" drill="0.6"/>
+<pad name="P$2" x="0" y="2.54" drill="0.6" shape="square"/>
 <pad name="P$3" x="0" y="5.08" drill="0.6"/>
 <pad name="P$4" x="0" y="7.62" drill="0.6"/>
 <pad name="P$5" x="0" y="10.16" drill="0.6"/>
-<pad name="P$6" x="0" y="12.7" drill="0.6" shape="square"/>
+<pad name="P$6" x="0" y="12.7" drill="0.6"/>
 <wire x1="-6.35" y1="16.964" x2="-6.35" y2="-4.264" width="0.127" layer="21"/>
 <wire x1="-6.35" y1="-4.264" x2="1.91" y2="-4.264" width="0.127" layer="21"/>
 <wire x1="1.91" y1="-4.264" x2="1.91" y2="16.964" width="0.127" layer="21"/>
@@ -1998,6 +1998,8 @@ LETTER landscape</description>
 <sheets>
 <sheet>
 <plain>
+<text x="172.72" y="129.54" size="1.778" layer="91">SCL</text>
+<text x="172.72" y="127" size="1.778" layer="91">SDA</text>
 </plain>
 <instances>
 <instance part="B1" gate="G$1" x="106.68" y="101.6" smashed="yes">

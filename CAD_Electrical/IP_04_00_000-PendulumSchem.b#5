@@ -162,6 +162,16 @@
 <wire x1="81.26" y1="0" x2="81.26" y2="53.01" width="0" layer="20"/>
 <wire x1="81.26" y1="53.01" x2="0" y2="53.01" width="0" layer="20"/>
 <wire x1="0" y1="53.01" x2="0" y2="0" width="0" layer="20"/>
+<text x="7.62" y="15.24" size="1.778" layer="21" rot="R90">PressureSensor1</text>
+<text x="19.05" y="15.24" size="1.778" layer="21" rot="R90">PressureSensor2</text>
+<text x="31.75" y="22.86" size="1.778" layer="21" rot="R180">GND</text>
+<text x="13.97" y="22.86" size="1.778" layer="21" rot="R180">GND</text>
+<text x="38.1" y="16.51" size="1.778" layer="21" rot="R90">GND</text>
+<text x="30.48" y="33.02" size="1.778" layer="21" rot="R90">GND</text>
+<text x="33.02" y="33.02" size="1.778" layer="21" rot="R90">X</text>
+<text x="35.56" y="33.02" size="1.778" layer="21" rot="R90">A</text>
+<text x="38.1" y="33.02" size="1.778" layer="21" rot="R90">VCC</text>
+<text x="40.64" y="33.02" size="1.778" layer="21" rot="R90">B</text>
 </plain>
 <libraries>
 <library name="SparkFun-Boards" urn="urn:adsk.eagle:library:509">

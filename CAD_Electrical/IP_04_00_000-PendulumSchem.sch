@@ -1993,7 +1993,7 @@ LETTER landscape</description>
 <part name="U$5" library="IPcustomDevices" deviceset="VALVE_MANIFOLD" device=""/>
 <part name="SL1" library="con-amp-quick" library_urn="urn:adsk.eagle:library:125" deviceset="M02" device="" package3d_urn="urn:adsk.eagle:package:5956/1"/>
 <part name="ROTARY_ENCODER" library="con-amp-quick" library_urn="urn:adsk.eagle:library:125" deviceset="M05" device="" package3d_urn="urn:adsk.eagle:package:5961/1"/>
-<part name="SL2" library="con-amp-quick" library_urn="urn:adsk.eagle:library:125" deviceset="M04" device="" package3d_urn="urn:adsk.eagle:package:5958/1"/>
+<part name="IMU" library="con-amp-quick" library_urn="urn:adsk.eagle:library:125" deviceset="M04" device="" package3d_urn="urn:adsk.eagle:package:5958/1"/>
 </parts>
 <sheets>
 <sheet>
@@ -2078,7 +2078,7 @@ LETTER landscape</description>
 <attribute name="VALUE" x="35.56" y="66.04" size="1.778" layer="96"/>
 <attribute name="NAME" x="35.56" y="84.582" size="1.778" layer="95"/>
 </instance>
-<instance part="SL2" gate="G$1" x="167.64" y="132.08" smashed="yes" rot="R180">
+<instance part="IMU" gate="G$1" x="167.64" y="132.08" smashed="yes" rot="R180">
 <attribute name="VALUE" x="172.72" y="139.7" size="1.778" layer="96" rot="R180"/>
 <attribute name="NAME" x="172.72" y="123.698" size="1.778" layer="95" rot="R180"/>
 </instance>
@@ -2095,7 +2095,7 @@ LETTER landscape</description>
 <segment>
 <pinref part="GND3" gate="1" pin="GND"/>
 <wire x1="157.48" y1="132.08" x2="157.48" y2="124.46" width="0.1524" layer="91"/>
-<pinref part="SL2" gate="G$1" pin="2"/>
+<pinref part="IMU" gate="G$1" pin="2"/>
 <wire x1="157.48" y1="132.08" x2="162.56" y2="132.08" width="0.1524" layer="91"/>
 </segment>
 <segment>
@@ -2162,7 +2162,7 @@ LETTER landscape</description>
 </segment>
 <segment>
 <pinref part="P+1" gate="1" pin="+5V"/>
-<pinref part="SL2" gate="G$1" pin="1"/>
+<pinref part="IMU" gate="G$1" pin="1"/>
 <wire x1="162.56" y1="139.7" x2="162.56" y2="134.62" width="0.1524" layer="91"/>
 </segment>
 </net>
@@ -2240,7 +2240,7 @@ LETTER landscape</description>
 <pinref part="B1" gate="G$1" pin="20(SDA)"/>
 <wire x1="124.46" y1="134.62" x2="139.7" y2="134.62" width="0.1524" layer="91"/>
 <wire x1="139.7" y1="134.62" x2="139.7" y2="127" width="0.1524" layer="91"/>
-<pinref part="SL2" gate="G$1" pin="4"/>
+<pinref part="IMU" gate="G$1" pin="4"/>
 <wire x1="139.7" y1="127" x2="162.56" y2="127" width="0.1524" layer="91"/>
 </segment>
 </net>
@@ -2249,7 +2249,7 @@ LETTER landscape</description>
 <pinref part="B1" gate="G$1" pin="21(SCL)"/>
 <wire x1="124.46" y1="132.08" x2="137.16" y2="132.08" width="0.1524" layer="91"/>
 <wire x1="137.16" y1="132.08" x2="137.16" y2="129.54" width="0.1524" layer="91"/>
-<pinref part="SL2" gate="G$1" pin="3"/>
+<pinref part="IMU" gate="G$1" pin="3"/>
 <wire x1="137.16" y1="129.54" x2="162.56" y2="129.54" width="0.1524" layer="91"/>
 </segment>
 </net>

@@ -162,28 +162,21 @@
 <wire x1="81.26" y1="0" x2="81.26" y2="53.01" width="0" layer="20"/>
 <wire x1="81.26" y1="53.01" x2="0" y2="53.01" width="0" layer="20"/>
 <wire x1="0" y1="53.01" x2="0" y2="0" width="0" layer="20"/>
-<text x="7.62" y="15.24" size="1.778" layer="21" rot="R90">PressureSensor1</text>
+<text x="8.89" y="15.24" size="1.778" layer="21" rot="R90">PressureSensor1</text>
 <text x="19.05" y="15.24" size="1.778" layer="21" rot="R90">PressureSensor2</text>
-<text x="30.48" y="33.02" size="1.778" layer="21" rot="R90">GND</text>
-<text x="33.02" y="33.02" size="1.778" layer="21" rot="R90">X</text>
-<text x="35.56" y="33.02" size="1.778" layer="21" rot="R90">A</text>
-<text x="38.1" y="33.02" size="1.778" layer="21" rot="R90">+5V</text>
-<text x="40.64" y="33.02" size="1.778" layer="21" rot="R90">B</text>
-<text x="44.45" y="22.86" size="1.778" layer="21" rot="R90">+5V</text>
-<text x="46.99" y="22.86" size="1.778" layer="21" rot="R90">GND</text>
-<text x="49.53" y="22.86" size="1.778" layer="21" rot="R90">SCL</text>
-<text x="52.07" y="22.86" size="1.778" layer="21" rot="R90">SDA</text>
-<text x="40.64" y="20.32" size="1.778" layer="21" rot="R90">VCC</text>
-<text x="60.96" y="19.05" size="1.778" layer="21" rot="R90">O1</text>
-<text x="58.42" y="19.05" size="1.778" layer="21" rot="R90">O2</text>
-<text x="60.96" y="26.67" size="1.778" layer="21" rot="R90">I1</text>
-<text x="58.42" y="26.67" size="1.778" layer="21" rot="R90">I2</text>
-<text x="57.15" y="33.02" size="1.778" layer="21" rot="R90">+24V</text>
-<text x="54.61" y="33.02" size="1.778" layer="21" rot="R90">GND</text>
-<text x="20.32" y="24.13" size="1.778" layer="21">VCC</text>
-<text x="10.16" y="24.13" size="1.778" layer="21">VCC</text>
-<text x="24.13" y="12.7" size="1.778" layer="21" rot="R90">V-OUT</text>
-<text x="13.97" y="12.7" size="1.778" layer="21" rot="R90">V-OUT</text>
+<text x="33.909" y="26.035" size="1.778" layer="21" rot="R90">X</text>
+<text x="36.449" y="26.035" size="1.778" layer="21" rot="R90">A</text>
+<text x="41.529" y="26.289" size="1.778" layer="21" rot="R90">B</text>
+<text x="56.388" y="33.528" size="1.27" layer="21" rot="R90">+24V</text>
+<text x="53.975" y="33.528" size="1.27" layer="21" rot="R90">GND</text>
+<text x="39.37" y="19.05" size="1.27" layer="21">TRANSISTOR_ARRAY</text>
+<text x="43.561" y="10.795" size="1.27" layer="21">VALVE_MANIFOLD</text>
+<text x="49.149" y="33.528" size="1.27" layer="21" rot="R90">SCL</text>
+<text x="51.308" y="33.655" size="1.27" layer="21" rot="R90">SDA</text>
+<text x="38.608" y="25.019" size="1.27" layer="21" rot="R90">+5V</text>
+<text x="30.988" y="23.876" size="1.27" layer="21" rot="R90">GND</text>
+<text x="44.069" y="24.638" size="1.27" layer="21" rot="R90">+5V</text>
+<text x="46.482" y="23.876" size="1.27" layer="21" rot="R90">GND</text>
 </plain>
 <libraries>
 <library name="SparkFun-Boards" urn="urn:adsk.eagle:library:509">
@@ -1599,7 +1592,7 @@ design rules under a new name.</description>
 <element name="ROTARY_ENCODER" library="con-amp-quick" library_urn="urn:adsk.eagle:library:125" package="05P" package3d_urn="urn:adsk.eagle:package:5961/1" value="" x="35.56" y="30.48" smashed="yes">
 <attribute name="MF" value="" x="123.19" y="-30.48" size="1.778" layer="27" display="off"/>
 <attribute name="MPN" value="" x="123.19" y="-30.48" size="1.778" layer="27" display="off"/>
-<attribute name="NAME" x="29.464" y="33.4264" size="1.27" layer="25" ratio="10"/>
+<attribute name="NAME" x="28.194" y="33.4264" size="1.27" layer="25" ratio="10"/>
 <attribute name="OC_FARNELL" value="unknown" x="123.19" y="-30.48" size="1.778" layer="27" display="off"/>
 <attribute name="OC_NEWARK" value="unknown" x="123.19" y="-30.48" size="1.778" layer="27" display="off"/>
 <attribute name="POPULARITY" value="16" x="123.19" y="-30.48" size="1.778" layer="27" display="off"/>
@@ -1608,7 +1601,6 @@ design rules under a new name.</description>
 <element name="SL1" library="con-amp-quick" library_urn="urn:adsk.eagle:library:125" package="02P" package3d_urn="urn:adsk.eagle:package:5956/1" value="" x="54.61" y="30.48" smashed="yes">
 <attribute name="MF" value="" x="152.4" y="-30.48" size="1.778" layer="27" display="off"/>
 <attribute name="MPN" value="" x="152.4" y="-30.48" size="1.778" layer="27" display="off"/>
-<attribute name="NAME" x="52.324" y="33.4264" size="1.27" layer="25" ratio="10"/>
 <attribute name="OC_FARNELL" value="unknown" x="152.4" y="-30.48" size="1.778" layer="27" display="off"/>
 <attribute name="OC_NEWARK" value="unknown" x="152.4" y="-30.48" size="1.778" layer="27" display="off"/>
 <attribute name="POPULARITY" value="33" x="152.4" y="-30.48" size="1.778" layer="27" display="off"/>
@@ -1618,10 +1610,10 @@ design rules under a new name.</description>
 <element name="U$3" library="IPcustomDevices" package="PRESSURE_SENSOR" value="PRESSURE_SENSOR" x="25.4" y="19.05" smashed="yes"/>
 <element name="U$4" library="IPcustomDevices" package="PRESSURE_SENSOR" value="PRESSURE_SENSOR" x="15.24" y="19.05" smashed="yes"/>
 <element name="U$5" library="IPcustomDevices" package="VALVE_MANIFOLD" value="VALVE_MANIFOLD" x="62.23" y="15.24" smashed="yes" rot="MR270"/>
-<element name="SL2" library="con-amp-quick" library_urn="urn:adsk.eagle:library:125" package="04P" package3d_urn="urn:adsk.eagle:package:5958/1" value="" x="46.99" y="30.48" smashed="yes">
+<element name="IMU" library="con-amp-quick" library_urn="urn:adsk.eagle:library:125" package="04P" package3d_urn="urn:adsk.eagle:package:5958/1" value="" x="46.99" y="30.48" smashed="yes">
 <attribute name="MF" value="" x="46.99" y="30.48" size="1.778" layer="27" display="off"/>
 <attribute name="MPN" value="" x="46.99" y="30.48" size="1.778" layer="27" display="off"/>
-<attribute name="NAME" x="42.164" y="33.4264" size="1.27" layer="25" ratio="10"/>
+<attribute name="NAME" x="48.514" y="26.6954" size="1.27" layer="25" ratio="10"/>
 <attribute name="OC_FARNELL" value="unknown" x="46.99" y="30.48" size="1.778" layer="27" display="off"/>
 <attribute name="OC_NEWARK" value="unknown" x="46.99" y="30.48" size="1.778" layer="27" display="off"/>
 <attribute name="POPULARITY" value="19" x="46.99" y="30.48" size="1.778" layer="27" display="off"/>
@@ -1637,7 +1629,7 @@ design rules under a new name.</description>
 <contactref element="U$3" pad="P$2"/>
 <contactref element="U$4" pad="P$2"/>
 <contactref element="SL1" pad="1"/>
-<contactref element="SL2" pad="2"/>
+<contactref element="IMU" pad="2"/>
 <wire x1="15.24" y1="21.59" x2="15.24" y2="21.75323125" width="0.1524" layer="16"/>
 <polygon width="0.1524" layer="16">
 <vertex x="0" y="53.34"/>
@@ -1656,7 +1648,7 @@ design rules under a new name.</description>
 <contactref element="ROTARY_ENCODER" pad="4"/>
 <contactref element="U$3" pad="P$3"/>
 <contactref element="U$4" pad="P$3"/>
-<contactref element="SL2" pad="1"/>
+<contactref element="IMU" pad="1"/>
 <wire x1="15.24" y1="24.13" x2="13.97" y2="22.86" width="0.1524" layer="1"/>
 <wire x1="13.97" y1="22.86" x2="13.97" y2="6.35" width="0.1524" layer="1"/>
 <wire x1="13.97" y1="6.35" x2="17.78" y2="2.54" width="0.1524" layer="1"/>
@@ -1742,7 +1734,7 @@ design rules under a new name.</description>
 </signal>
 <signal name="N$2">
 <contactref element="B1" pad="20"/>
-<contactref element="SL2" pad="4"/>
+<contactref element="IMU" pad="4"/>
 <wire x1="48.64928125" y1="28.829" x2="47.87071875" y2="28.829" width="0.1524" layer="1"/>
 <wire x1="47.87071875" y1="28.829" x2="47.3202" y2="29.37951875" width="0.1524" layer="1"/>
 <wire x1="47.3202" y1="29.37951875" x2="47.3202" y2="32.51125625" width="0.1524" layer="1"/>
@@ -1753,7 +1745,7 @@ design rules under a new name.</description>
 </signal>
 <signal name="N$3">
 <contactref element="B1" pad="21"/>
-<contactref element="SL2" pad="3"/>
+<contactref element="IMU" pad="3"/>
 <wire x1="48.26" y1="30.48" x2="48.26" y2="33.02" width="0.1524" layer="1"/>
 <wire x1="48.26" y1="33.02" x2="66.04" y2="50.8" width="0.1524" layer="1"/>
 </signal>

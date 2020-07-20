@@ -1628,13 +1628,6 @@ design rules under a new name.</description>
 <vertex x="78.74" y="0"/>
 <vertex x="0" y="0"/>
 </polygon>
-<wire x1="45.72" y1="30.48" x2="53.34" y2="30.48" width="0" layer="19" extent="1-1"/>
-<wire x1="39.37" y1="17.78" x2="45.72" y2="30.48" width="0" layer="19" extent="1-1"/>
-<wire x1="25.4" y1="21.59" x2="39.37" y2="17.78" width="0" layer="19" extent="1-1"/>
-<wire x1="15.24" y1="21.59" x2="25.4" y2="21.59" width="0" layer="19" extent="1-1"/>
-<wire x1="30.48" y1="30.48" x2="25.4" y2="21.59" width="0" layer="19" extent="1-1"/>
-<wire x1="62.23" y1="15.24" x2="53.34" y2="30.48" width="0" layer="19" extent="1-1"/>
-<wire x1="20.32" y1="2.54" x2="25.4" y2="21.59" width="0" layer="19" extent="1-1"/>
 </signal>
 <signal name="+5V">
 <contactref element="B1" pad="5V@0"/>
@@ -1655,24 +1648,6 @@ design rules under a new name.</description>
 <wire x1="42.68028125" y1="30.48" x2="43.18" y2="30.48" width="0.1524" layer="1"/>
 <wire x1="38.59971875" y1="30.48" x2="40.25071875" y2="28.829" width="0.1524" layer="1"/>
 <wire x1="41.02928125" y1="28.829" x2="42.68028125" y2="30.48" width="0.1524" layer="1"/>
-</signal>
-<signal name="N$9">
-<contactref element="B1" pad="6"/>
-<contactref element="ROTARY_ENCODER" pad="5"/>
-<wire x1="40.64" y1="30.48" x2="40.64" y2="38.1" width="0.1524" layer="1"/>
-<wire x1="40.64" y1="38.1" x2="27.94" y2="50.8" width="0.1524" layer="1"/>
-</signal>
-<signal name="N$11">
-<contactref element="B1" pad="8"/>
-<contactref element="ROTARY_ENCODER" pad="2"/>
-<wire x1="33.02" y1="30.48" x2="21.336" y2="42.164" width="0.1524" layer="1"/>
-<wire x1="21.336" y1="42.164" x2="21.336" y2="50.8" width="0.1524" layer="1"/>
-</signal>
-<signal name="N$1">
-<contactref element="B1" pad="7"/>
-<contactref element="ROTARY_ENCODER" pad="3"/>
-<wire x1="25.4" y1="50.8" x2="35.56" y2="40.64" width="0.1524" layer="1"/>
-<wire x1="35.56" y1="40.64" x2="35.56" y2="30.48" width="0.1524" layer="1"/>
 </signal>
 <signal name="N$6">
 <contactref element="U$2" pad="P$10"/>
@@ -1759,6 +1734,39 @@ design rules under a new name.</description>
 <contactref element="SL2" pad="3"/>
 <wire x1="48.26" y1="30.48" x2="48.26" y2="33.02" width="0.1524" layer="1"/>
 <wire x1="48.26" y1="33.02" x2="66.04" y2="50.8" width="0.1524" layer="1"/>
+</signal>
+<signal name="N$4">
+<contactref element="ROTARY_ENCODER" pad="5"/>
+<contactref element="B1" pad="2"/>
+<wire x1="33.9598" y1="29.37951875" x2="33.40928125" y2="28.829" width="0.1524" layer="1"/>
+<wire x1="33.40928125" y1="28.829" x2="32.63071875" y2="28.829" width="0.1524" layer="1"/>
+<wire x1="32.63071875" y1="28.829" x2="32.0802" y2="29.37951875" width="0.1524" layer="1"/>
+<wire x1="32.0802" y1="29.37951875" x2="32.0802" y2="31.58048125" width="0.1524" layer="1"/>
+<wire x1="40.64" y1="30.48" x2="38.989" y2="32.131" width="0.1524" layer="1"/>
+<wire x1="38.989" y1="32.131" x2="35.17071875" y2="32.131" width="0.1524" layer="1"/>
+<wire x1="35.17071875" y1="32.131" x2="33.9598" y2="30.92008125" width="0.1524" layer="1"/>
+<wire x1="33.9598" y1="30.92008125" x2="33.9598" y2="29.37951875" width="0.1524" layer="1"/>
+<wire x1="38.1" y1="37.60028125" x2="38.1" y2="50.8" width="0.1524" layer="1"/>
+<wire x1="32.0802" y1="31.58048125" x2="38.1" y2="37.60028125" width="0.1524" layer="1"/>
+</signal>
+<signal name="N$1">
+<contactref element="ROTARY_ENCODER" pad="3"/>
+<contactref element="B1" pad="3"/>
+<wire x1="35.56" y1="35.4913375" x2="35.56" y2="50.8" width="0.1524" layer="1"/>
+<wire x1="33.5355375" y1="28.5242" x2="32.5044625" y2="28.5242" width="0.1524" layer="1"/>
+<wire x1="32.5044625" y1="28.5242" x2="31.7754" y2="29.2532625" width="0.1524" layer="1"/>
+<wire x1="31.7754" y1="29.2532625" x2="31.7754" y2="31.7067375" width="0.1524" layer="1"/>
+<wire x1="31.7754" y1="31.7067375" x2="35.56" y2="35.4913375" width="0.1524" layer="1"/>
+<wire x1="35.56" y1="30.48" x2="35.4913375" y2="30.48" width="0.1524" layer="1"/>
+<wire x1="35.4913375" y1="30.48" x2="33.5355375" y2="28.5242" width="0.1524" layer="1"/>
+</signal>
+<signal name="N$7">
+<contactref element="ROTARY_ENCODER" pad="2"/>
+<contactref element="B1" pad="18"/>
+<wire x1="33.02" y1="30.48" x2="52.1716" y2="49.6316" width="0.1524" layer="1"/>
+<wire x1="57.53236875" y1="50.8" x2="58.42" y2="50.8" width="0.1524" layer="1"/>
+<wire x1="56.36396875" y1="49.6316" x2="57.53236875" y2="50.8" width="0.1524" layer="1"/>
+<wire x1="52.1716" y1="49.6316" x2="56.36396875" y2="49.6316" width="0.1524" layer="1"/>
 </signal>
 </signals>
 <mfgpreviewcolors>
