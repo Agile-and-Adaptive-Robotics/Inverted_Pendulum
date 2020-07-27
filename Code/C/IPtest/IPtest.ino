@@ -21,7 +21,7 @@
 Adafruit_FXAS21002C gyro = Adafruit_FXAS21002C(0x0021002C);
 
 //vars
-int intFreq = 0
+int intFreq = 0;
 
 // functions
 void displaySensorDetails(void) {
@@ -46,10 +46,6 @@ void displaySensorDetails(void) {
   Serial.println("------------------------------------");
   Serial.println("");
   delay(500);
-}
-
-int interruptFreq() {
-  intFreq = clockSpeed / (prescaler * (compareMatchRegister + 1))
 }
 
 void setUpTimerInterrupt(void){
