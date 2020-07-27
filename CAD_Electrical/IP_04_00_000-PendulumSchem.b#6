@@ -177,6 +177,7 @@
 <text x="30.988" y="23.876" size="1.27" layer="21" rot="R90">GND</text>
 <text x="44.069" y="24.638" size="1.27" layer="21" rot="R90">+5V</text>
 <text x="46.736" y="24.13" size="1.27" layer="21" rot="R90">GND</text>
+<text x="3.81" y="7.62" size="1.778" layer="21" rot="R90">MicroSDReader</text>
 </plain>
 <libraries>
 <library name="SparkFun-Boards" urn="urn:adsk.eagle:library:509">
