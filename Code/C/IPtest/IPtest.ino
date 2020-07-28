@@ -13,12 +13,16 @@
 
 // bitwise operators (| & <<): https://www.programiz.com/c-programming/bitwise-operators
 
+// encoder code library: https://github.com/mathertel/RotaryEncoder
+
 #include <Adafruit_FXAS21002C.h>
 #include <Adafruit_Sensor.h>
 #include <Wire.h>
+#include <RotaryEncoder.h>
 
 // Assign devices
 Adafruit_FXAS21002C gyro = Adafruit_FXAS21002C(0x0021002C);
+RotaryEncoder encoder(pin1, pin2);
 
 //vars
 int intFreq = 0;
