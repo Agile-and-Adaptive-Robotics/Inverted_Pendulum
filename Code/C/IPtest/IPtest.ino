@@ -15,19 +15,24 @@
 
 // encoder code library: https://github.com/mathertel/RotaryEncoder
 
+// libraries___________________________________________________________________________________
+
 #include <Adafruit_FXAS21002C.h>
 #include <Adafruit_Sensor.h>
 #include <Wire.h>
 #include <RotaryEncoder.h>
 
-// Assign devices
+// Assign devices______________________________________________________________________________
 Adafruit_FXAS21002C gyro = Adafruit_FXAS21002C(0x0021002C);
-RotaryEncoder encoder(pin1, pin2);
+RotaryEncoder encoder(2, 3);
 
-//vars
-int intFreq = 0;
+// constants___________________________________________________________________________________
+const int thresholdPressure = 1; // arbitrary value
 
-// functions
+//vars_________________________________________________________________________________________
+
+// functions___________________________________________________________________________________
+
 void displaySensorDetails(void) {
   sensor_t sensor;
   gyro.getSensor(&sensor);
@@ -74,6 +79,26 @@ void setUpTimerInterrupt(void){
 
   sei();
 }
+
+void bangBang(float desiredPressure, float actualPressure){
+  float lowerPressure;
+  float upperPressure;
+
+  // compute upper and lower bounds.
+  lowerPressure = desiredPressure - thresholdPressure;
+  upperPressure = desiredPressure + thresholdPressure;
+
+  // open or close valve.
+  if (actualPressure > upperPressure){
+    PORTB &= ~(1 << 1); // PORTB = currentStatus & ~(1 << 1);
+    // 0000 0001 becomes 0000 0010 then 1111 1101 then & with current
+  }
+  else if (actualPressure < lowerPressure){
+    PORTB |= (1 << 1);
+  }
+}
+
+//_____________________________________________________________________________________________
 
 void setup() {
   setUpTimerInterrupt();
