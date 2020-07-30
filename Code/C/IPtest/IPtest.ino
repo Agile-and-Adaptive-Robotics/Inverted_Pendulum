@@ -22,7 +22,9 @@ RotaryEncoder encoder(2, 3);
 // constants___________________________________________________________________________________
 const int thresholdPressure = 1; // arbitrary value
 
-//vars_________________________________________________________________________________________
+// variables___________________________________________________________________________________
+float pressureSensor1 = 0;
+float pressureSensor2 = 0;
 
 // functions___________________________________________________________________________________
 
@@ -74,10 +76,20 @@ void setUpTimerInterrupt(void){ // should work but register values unchecked
 }
 
 void setPinModes(void){
-  
   // set pins as outputs; same as pinMode
+  
+  // Register A
   DDRA = B00000011; // data direction register (i/o)
   PORTA = 0; // port A data register (high/low)
+}
+
+void bangHigh(int pin){
+  // use bitwise operators here to not alter set pin modes
+  PORTA |= (1 << (pin - 22));
+}
+
+void bangLow(int pin){
+  PORTA &= ~(1 << (pin - 22));
 }
 
 void bangBang(float desiredPressure, float actualPressure, int pin){
@@ -90,12 +102,22 @@ void bangBang(float desiredPressure, float actualPressure, int pin){
 
   // open or close valve.
   if (actualPressure > upperPressure){
-    PORTA &= ~(1 << pin); // PORTA = currentStatus & ~(1 << 1);
-    // 0000 0001 becomes 0000 0010 then 1111 1101 then & with current
+    bangLow(pin);
   }
   else if (actualPressure < lowerPressure){
-    PORTA |= (1 << pin);
+    bangHigh(pin);
   }
+}
+
+void manualPWM(float dutyCycle, int pin){ // if dutyCycle is 50% then input is 0.5
+  float period = 2; // seconds
+  float timeHigh = period * dutyCycle; // seconds
+  float timeLow = period - (period * dutyCycle); // seconds
+
+  bangHigh(pin);
+  delay(timeHigh);
+  bangLow(pin);
+  delay(timeLow);
 }
 
 //_____________________________________________________________________________________________
@@ -113,16 +135,22 @@ void setup() {
   displaySensorDetails();
 }
 
+float timerInterrupt(){
+  // read analog pressure sensors
+  pressureSensor1 = analogRead(A2);
+  pressureSensor2 = analogRead(A3);
+
+  return pressureSensor1, pressureSensor2;
+}
+
 ISR(TIMER4_COMPA_vect){
   // timer interrupt execute commands
   // generates pulse wave of freq 1Hz/2 = 0.5Hz (two cycles for full wave)
+
+  timerInterrupt();
 }
 
 void loop() {
   // put your main code here, to run repeatedly:
 
-}
-
-void timerInterrupt(){
-  // pause loop sequence; constant sampling freq
 }
