@@ -1,21 +1,14 @@
-// plan
-  // design controller to figure out which commands to output
-  // valve manifold only on/off (bang-bang)
-    // PWM
-  // Cascaded control
-  // timer interrupt not void loop to read pressure sensors & IMU
-  // IMU & pressure sensors & encoder & SD card slot
-  // hopefully figure out OOP
-
-// MEGA uses timer4, CTC
-// timer interrupt instructable: https://www.instructables.com/id/Arduino-Timer-Interrupts/
-// https://forum.arduino.cc/index.php?topic=625904.0
-
-// bitwise operators (| & <<): https://www.programiz.com/c-programming/bitwise-operators
-
-// encoder code library: https://github.com/mathertel/RotaryEncoder
+/* This code uses time proportioning PWM control on the bang-bang valve manifolds.
+ *  
+ * pin mapping reference: https://www.arduino.cc/en/Hacking/PinMapping2560
+ *  
+ * digital pin 22 = transistor array P1 = PA0/AD0 = pin78
+ * digital pin 23 = transistor array P2 = PA1/AD1 = pin77
+ */
 
 // libraries___________________________________________________________________________________
+/*encoder code library: https://github.com/mathertel/RotaryEncoder
+ */
 
 #include <Adafruit_FXAS21002C.h>
 #include <Adafruit_Sensor.h>
@@ -57,7 +50,7 @@ void displaySensorDetails(void) {
   delay(500);
 }
 
-void setUpTimerInterrupt(void){
+void setUpTimerInterrupt(void){ // should work but register values unchecked
   cli();
 
   // set timer4 interrupt at 1Hz
@@ -80,7 +73,14 @@ void setUpTimerInterrupt(void){
   sei();
 }
 
-void bangBang(float desiredPressure, float actualPressure){
+void setPinModes(void){
+  
+  // set pins as outputs; same as pinMode
+  DDRA = B00000011; // data direction register (i/o)
+  PORTA = 0; // port A data register (high/low)
+}
+
+void bangBang(float desiredPressure, float actualPressure, int pin){
   float lowerPressure;
   float upperPressure;
 
@@ -90,17 +90,18 @@ void bangBang(float desiredPressure, float actualPressure){
 
   // open or close valve.
   if (actualPressure > upperPressure){
-    PORTB &= ~(1 << 1); // PORTB = currentStatus & ~(1 << 1);
+    PORTA &= ~(1 << pin); // PORTA = currentStatus & ~(1 << 1);
     // 0000 0001 becomes 0000 0010 then 1111 1101 then & with current
   }
   else if (actualPressure < lowerPressure){
-    PORTB |= (1 << 1);
+    PORTA |= (1 << pin);
   }
 }
 
 //_____________________________________________________________________________________________
 
 void setup() {
+  setPinModes();
   setUpTimerInterrupt();
   
   Serial.begin(9600);
