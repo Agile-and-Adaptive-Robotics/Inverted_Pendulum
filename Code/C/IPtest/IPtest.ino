@@ -59,24 +59,16 @@ void displaySensorDetails(void) {
 void setUpTimerInterrupt(void){ // should work but register values unchecked
   cli(); // disable interrupts during timed seq
 
-  // set timer4 interrupt at 1Hz
-  TCCR4A = 0; //register set to 0
-  TCCR4B = 0; //register set to 0
-  TCNT4 = 0; //init counter to 0
+  // initially set to zero
+  TCCR1A = 0;
+  TCCR1B = 0;
 
-  // set compare match register for 1Hz increments
-  OCR4A = 15624/1;
+  // set Timer/Counter 1 Register B to no prescaler --> clk/1
+  TCCR1B |= (1 << CS10); // CS10 is CSn0
 
-  // turn on CTC mode
-  TCCR4B |= (1 << WGM12);
+  // increase sampling frequency for ADC
 
-  // Set CS12 and CS10 bits for 1024 prescaler
-  TCCR4B |= (1 << CS12) | (1 << CS10);
-
-  // enable timer compare interrupt
-  TIMSK4 |= (1 << OCIE4A);
-
-  sei(); // set glogal interrupt enable
+  sei(); // set global interrupt enable
 }
 
 void setPinModes(void){
@@ -143,6 +135,10 @@ void millisBasedPWM(float dutyCycle, float freqPWM, int pin, float currentMillis
       oldMillis += activeDuration;
     }
   }
+}
+
+void generatePWM(){
+  
 }
 
 //_____________________________________________________________________________________________
