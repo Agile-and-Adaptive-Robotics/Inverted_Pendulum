@@ -4,6 +4,8 @@
  *  
  * digital pin 22 = transistor array P1 = PA0/AD0 = pin78
  * digital pin 23 = transistor array P2 = PA1/AD1 = pin77
+ * 
+ * ADC = Analog to Digital Converter
  */
 
 // libraries___________________________________________________________________________________
@@ -19,12 +21,13 @@
 Adafruit_FXAS21002C gyro = Adafruit_FXAS21002C(0x0021002C);
 RotaryEncoder encoder(2, 3);
 
-// constants___________________________________________________________________________________
+// global constants____________________________________________________________________________
 const int thresholdPressure = 1; // arbitrary value
 
-// variables___________________________________________________________________________________
+// global variables____________________________________________________________________________
 float pressureSensor1 = 0;
 float pressureSensor2 = 0;
+float freqPWM;
 
 // functions___________________________________________________________________________________
 
@@ -53,7 +56,7 @@ void displaySensorDetails(void) {
 }
 
 void setUpTimerInterrupt(void){ // should work but register values unchecked
-  cli();
+  cli(); // disable interrupts during timed seq
 
   // set timer4 interrupt at 1Hz
   TCCR4A = 0; //register set to 0
@@ -72,7 +75,7 @@ void setUpTimerInterrupt(void){ // should work but register values unchecked
   // enable timer compare interrupt
   TIMSK4 |= (1 << OCIE4A);
 
-  sei();
+  sei(); // set glogal interrupt enable
 }
 
 void setPinModes(void){
@@ -102,10 +105,12 @@ void bangBang(float desiredPressure, float actualPressure, int pin){
 
   // open or close valve.
   if (actualPressure > upperPressure){
-    bangLow(pin);
+    bangLow(pin); // close
+    return false;
   }
   else if (actualPressure < lowerPressure){
-    bangHigh(pin);
+    bangHigh(pin); // open
+    return true;
   }
 }
 
@@ -118,6 +123,25 @@ void manualPWM(float dutyCycle, int pin){ // if dutyCycle is 50% then input is 0
   delay(timeHigh);
   bangLow(pin);
   delay(timeLow);
+}
+
+void generatePWM(float dutyCycle, freqPWM, int pin){  // dutyCycle in ms
+  // freq and period are reciprocals
+  float interval = 1 / freqPWM;
+  float activeDuration = dutyCycle * interval;
+  
+  if (bangBang() == false){
+    if (currentMillis - oldMillis >= interval){
+      bangHigh();
+      oldMillis += interval;
+    }
+  }
+  else {
+    if (currentMillis - oldMillis >= activeDuration){
+      bangLow();
+      oldMillis += activeDuration;
+    }
+  }
 }
 
 //_____________________________________________________________________________________________
@@ -151,6 +175,6 @@ ISR(TIMER4_COMPA_vect){
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
-
+  float currentMillis = millis(); // latest value of millis()
+  valveManifoldPWM();
 }
