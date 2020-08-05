@@ -23,11 +23,12 @@ RotaryEncoder encoder(2, 3);
 
 // global constants____________________________________________________________________________
 const int thresholdPressure = 1; // arbitrary value
+const float freqPWM = 1; // arbitrary value
 
 // global variables____________________________________________________________________________
 float pressureSensor1 = 0;
 float pressureSensor2 = 0;
-float freqPWM;
+bool isHigh = false;
 
 // functions___________________________________________________________________________________
 
@@ -89,10 +90,12 @@ void setPinModes(void){
 void bangHigh(int pin){
   // use bitwise operators here to not alter set pin modes
   PORTA |= (1 << (pin - 22));
+  bool isHigh = true;
 }
 
 void bangLow(int pin){
   PORTA &= ~(1 << (pin - 22));
+  bool isHigh = false;
 }
 
 void bangBang(float desiredPressure, float actualPressure, int pin){
@@ -106,11 +109,9 @@ void bangBang(float desiredPressure, float actualPressure, int pin){
   // open or close valve.
   if (actualPressure > upperPressure){
     bangLow(pin); // close
-    return false;
   }
   else if (actualPressure < lowerPressure){
     bangHigh(pin); // open
-    return true;
   }
 }
 
@@ -125,20 +126,20 @@ void manualPWM(float dutyCycle, int pin){ // if dutyCycle is 50% then input is 0
   delay(timeLow);
 }
 
-void generatePWM(float dutyCycle, freqPWM, int pin){  // dutyCycle in ms
+void millisBasedPWM(float dutyCycle, float freqPWM, int pin, float currentMillis, float oldMillis){  // dutyCycle in ms
   // freq and period are reciprocals
   float interval = 1 / freqPWM;
   float activeDuration = dutyCycle * interval;
   
-  if (bangBang() == false){
+  if (isHigh == false){
     if (currentMillis - oldMillis >= interval){
-      bangHigh();
+      bangHigh(pin);
       oldMillis += interval;
     }
   }
   else {
     if (currentMillis - oldMillis >= activeDuration){
-      bangLow();
+      bangLow(pin);
       oldMillis += activeDuration;
     }
   }
@@ -176,5 +177,4 @@ ISR(TIMER4_COMPA_vect){
 
 void loop() {
   float currentMillis = millis(); // latest value of millis()
-  valveManifoldPWM();
 }
