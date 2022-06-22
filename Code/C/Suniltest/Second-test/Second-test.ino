@@ -1,9 +1,8 @@
-
 #include <Arduino.h>
 #include <RotaryEncoder.h>
 
-RotaryEncoder encoder(6, 9, RotaryEncoder::LatchMode::TWO03);
 
+RotaryEncoder encoder(11, 12, RotaryEncoder::LatchMode::TWO03);
 
 int lastPosition = 0;
 int currentPosition = 0;
@@ -32,41 +31,35 @@ const float EQUALIBRIUM_OPEN = .5;
  */
 
 
-const int LEFT_VALVE_PIN = 3;
-const int RIGHT_VALVE_PIN = 5;
+//const int LEFT_VALVE_PIN = 3;
+//const int RIGHT_VALVE_PIN = 5;
 
 
 // ------------------------------------------------- //
 
 
-// the setup function runs once when you press reset or power the board
 void setup() {
-  // initialize digital pin LED_BUILTIN as an output.
+  // put your setup code here, to run once:
 
   Serial.begin(9600);
+  while(!Serial);
 
+  Serial.println("starting");
 
-  pinMode(LEFT_VALVE_PIN, OUTPUT);
-  pinMode(RIGHT_VALVE_PIN, OUTPUT);
+  pinMode(3, OUTPUT);
+  pinMode(5, OUTPUT);
+
+  pinMode(11, INPUT);
+  pinMode(12, INPUT);
 }
-
-
-
-
 
 // ------------------------------------------------- //
 
-// the loop function runs over and over again forever
+
 void loop() {
+  // put your main code here, to run repeatedly:
 
-  // ------------------// encoder testing
 
-  encoder.tick();
-  currentPosition = encoder.getPosition();
-
-  Serial.println(currentPosition);
-
-  
   // ------------------// random pushes (for simulation)
   int randNum = random(100);
   if (randNum < 10) {
@@ -78,30 +71,42 @@ void loop() {
   
   // ------------------// calculate pwm to send to valves
 
+  
   float correctionAmount = (targetAngle - angle) / 2;
 
   angle += correctionAmount / 10; // changing angle just for simulation
 
   leftValveOpen = constrain(EQUALIBRIUM_OPEN - correctionAmount, 0, 1);
   rightValveOpen = constrain(EQUALIBRIUM_OPEN + correctionAmount, 0, 1);
-
   
-
-
-  
-  
-
-  
-
-
   // ------------------// change pwm of valves
 
   //Serial.println(leftValveOpen);
+
+  int direction = (int)(encoder.getDirection());
   
-  //analogWrite(LEFT_VALVE_PIN, constrain(leftValveOpen - EQUALIBRIUM_OPEN, 0, 1) * 255);
-  //analogWrite(RIGHT_VALVE_PIN, constrain(rightValveOpen - EQUALIBRIUM_OPEN, 0, 1) * 255);
+
+  if (direction == -1) {
+    analogWrite(3, 255);
+  } else analogWrite(3, 0);
+  if (direction == 1) {
+    analogWrite(5, 255);
+  } else analogWrite(5, 0);
+  
+  //digitalWrite(3, leftValveOpen * 255);
+  //digitalWrite(5, rightValveOpen * 255);
+
+  // ------------------// encoder testing
+
+  encoder.tick();
 
   
-  
-  delay(10);
+
+  currentPosition = encoder.getPosition();
+
+  if (currentPosition != lastPosition) {
+    //Serial.println((int)(encoder.getDirection()));
+    lastPosition = currentPosition;
+  }
+
 }
