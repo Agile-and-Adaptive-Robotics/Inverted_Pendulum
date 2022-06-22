@@ -49,6 +49,9 @@ void setup() {
   pinMode(3, OUTPUT);
   pinMode(5, OUTPUT);
 
+  pinMode(7, INPUT);
+  pinMode(8, INPUT);
+
   pinMode(11, INPUT);
   pinMode(12, INPUT);
 }
@@ -84,15 +87,35 @@ void loop() {
   //Serial.println(leftValveOpen);
 
   int direction = (int)(encoder.getDirection());
-  
 
-  if (direction == -1) {
-    analogWrite(3, 255);
-  } else analogWrite(3, 0);
-  if (direction == 1) {
-    analogWrite(5, 255);
-  } else analogWrite(5, 0);
+  static float leftLEDBrightness = .5;
+  static float rightLEDBrightness = .5;
+
+  float dimSpeed = .0002;
   
+  if (digitalRead(7) && leftLEDBrightness < 1) {
+    leftLEDBrightness += dimSpeed;
+    rightLEDBrightness -= dimSpeed;
+    
+    constrain(leftLEDBrightness, 0, 1);
+    constrain(rightLEDBrightness, 0, 1);
+    
+    analogWrite(3, (int)(leftLEDBrightness * 255));
+    analogWrite(5, (int)(rightLEDBrightness * 255));
+  }
+
+  
+  if (digitalRead(8) && rightLEDBrightness < 1) {
+    rightLEDBrightness += dimSpeed;
+    leftLEDBrightness -= dimSpeed;
+
+    constrain(rightLEDBrightness, 0, 1);
+    constrain(leftLEDBrightness, 0, 1);
+    
+    analogWrite(5, (int)(rightLEDBrightness * 255));
+    analogWrite(3, (int)(leftLEDBrightness * 255));
+  }
+
   //digitalWrite(3, leftValveOpen * 255);
   //digitalWrite(5, rightValveOpen * 255);
 
@@ -105,7 +128,7 @@ void loop() {
   currentPosition = encoder.getPosition();
 
   if (currentPosition != lastPosition) {
-    //Serial.println((int)(encoder.getDirection()));
+    Serial.println(currentPosition);
     lastPosition = currentPosition;
   }
 
