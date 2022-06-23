@@ -1,4 +1,4 @@
-#include <Arduino.h>
+/*#include <Arduino.h>
 #include <RotaryEncoder.h>
 
 
@@ -30,7 +30,7 @@ const float EQUALIBRIUM_OPEN = .5;
  if valveOpen is more than equalibrium it is relaxing
  */
 
-
+/*
 //const int LEFT_VALVE_PIN = 3;
 //const int RIGHT_VALVE_PIN = 5;
 
@@ -132,4 +132,4 @@ void loop() {
     lastPosition = currentPosition;
   }
 
-}
+}*/
