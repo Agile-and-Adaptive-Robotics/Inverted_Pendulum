@@ -21,7 +21,7 @@ int currentPosition = 0;
 
 // ------------------ // General stuff
 
-int checksPerSecond = 100;
+int checksPerSecond = 300;
 
 // ------------------ // Angle stuff
 

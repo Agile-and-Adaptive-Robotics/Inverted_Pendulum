@@ -6,6 +6,8 @@
 // on counter keeps going up until it reaches open total
 
 
+int minimumOffTotal = 5;
+int minimumOnTotal = 5;
 
 
 
@@ -54,8 +56,21 @@ bool leftCalculateOn() {
 
   for (int i = 1; i <= variation; i++) {
     if (offTotal % i == 0 && onTotal % i == 0) { // if i is a factor of leftOnTotal and leftOffTotal
-      //offTotal /= i;
-      //onTotal /= i;
+      offTotal /= i;
+      onTotal /= i;
+
+      if (minimumOffTotal < 5) {
+        int changeBy = (int)((5 / offTotal) + .5);
+        offTotal * changeBy;
+        onTotal * changeBy;
+      }
+  
+      
+      if (minimumOnTotal < 5) {
+        int changeBy = (int)((5 / onTotal) + .5);
+        offTotal * changeBy;
+        onTotal * changeBy;
+      }
     }
   }
 
@@ -111,9 +126,24 @@ bool rightCalculateOn() {
 
   for (int i = 1; i <= variation; i++) {
     if (offTotal % i == 0 && onTotal % i == 0) { // if i is a factor of rightOnTotal and rightOffTotal
-      //offTotal /= i;
-      //onTotal /= i;
+      offTotal /= i;
+      onTotal /= i;
+
+      
+      if (minimumOffTotal < 5) {
+        int changeBy = (int)((5 / offTotal) + .5);
+        offTotal * changeBy;
+        onTotal * changeBy;
+      }
+  
+      
+      if (minimumOnTotal < 5) {
+        int changeBy = (int)((5 / onTotal) + .5);
+        offTotal * changeBy;
+        onTotal * changeBy;
+      }
     }
+
   }
 
   return on;
