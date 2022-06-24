@@ -1,4 +1,4 @@
-/*
+
 bool leftOn = false;
 bool rightOn = false;
 
@@ -11,10 +11,10 @@ int rightOnTotal = 1;
 int leftOffTotal = 1;
 int rightOffTotal = 1;
 
-float leftOnFloat = .5;
+float leftOnFloat = .1;
 float rightOnFloat = .5;
 
-int leftOnValue = 2;
+int leftOnValue = 0;
 int rightOnValue = 6;
 
 int lastLeftOnValue = 2;
@@ -54,28 +54,7 @@ void setup() {
 
 
 
-
-void loop() {
-
-  // ------------------- // calculate left on value with leftOnFloat
-
-  leftOnValue = (int)((leftOnFloat * variation) + .5);
-
-  // ------------------- // calculate left on and left off counter totals based on left on value
-
-  leftOnTotal = leftOnValue;
-  leftOffTotal = variation - leftOnValue;
-
-  // ---- // simplify the ratio (6:6 turns to 1:1, 3:9 turns to 1:3, etc.)
-
-  for (int i = 1; i <= variation; i++) {
-    if (leftOffTotal % i == 0 && leftOnTotal % i == 0) { // if i is a factor of leftOnTotal and leftOffTotal
-      //leftOffTotal /= i;
-      //leftOnTotal /= i;
-    }
-  }
-
-  // ------------------- // update counters
+void updateCounters() {
   
   if (leftCurrentCounter < leftCurrentTotal) {
     leftCurrentCounter++;
@@ -94,6 +73,35 @@ void loop() {
     }
   }
 
+
+  // ------------------- // calculate left on value with leftOnFloat
+
+  leftOnValue = (int)((leftOnFloat * variation) + .5);
+
+  // ------------------- // calculate left on and left off counter totals based on left on value
+
+  leftOnTotal = leftOnValue;
+  leftOffTotal = variation - leftOnValue;
+
+  // ---- // simplify the ratio (6:6 turns to 1:1, 3:9 turns to 1:3, etc.)
+
+  for (int i = 1; i <= variation; i++) {
+    if (leftOffTotal % i == 0 && leftOnTotal % i == 0) { // if i is a factor of leftOnTotal and leftOffTotal
+      //leftOffTotal /= i;
+      //leftOnTotal /= i;
+    }
+  }
+  
+}
+
+
+
+void loop() {
+
+
+  // ------------------- // update counters
+  
+  updateCounters();
   
   digitalWrite(3, leftOn * 255);
 
@@ -128,4 +136,4 @@ void loop() {
 
   delay(10);
   
-}*/
+}

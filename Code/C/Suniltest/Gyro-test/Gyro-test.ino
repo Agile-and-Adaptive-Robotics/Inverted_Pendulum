@@ -19,19 +19,21 @@ int lastPosition = 0;
 int currentPosition = 0;
 
 
-// ------------------ //
+// ------------------ // General stuff
 
+int checksPerSecond = 100;
 
-int checksPerSecond = 10;
+// ------------------ // Angle stuff
+
 
 float angle = PI / 2;
 float angleVelocity = 0;
 const float targetAngle = PI / 2; // angle straight up (90 degrees)
 
-float correction = 0;
+float correction = .141;
 
-float lastVelocities[5] = {0, 0, 0, 0, 0};
-const int lastVelocitiesLength = 5;
+float lastVelocities[5] = {0, 0, 0};
+const int lastVelocitiesLength = 3;
 
 // ------------------ // valve open amounts -- floats from 0 to 1
 
@@ -56,6 +58,8 @@ bool inRange(float x, float a, float b) {
     else return false;
   }
 }
+
+// ------------------------------------------------- //
 
 void setup() {
   Serial.begin(9600);
@@ -82,13 +86,20 @@ void setup() {
 
 
 void loop() {
+  static int loopCounter = 0;
+  loopCounter++;
+
 
   // ------------------ // calculate angle
 
   sensors_event_t event;
   gyro.getEvent(&event);
   
-  angleVelocity = event.gyro.z - correction;
+  if (loopCounter > 2) {
+    angleVelocity = event.gyro.z - correction;
+  } else {
+    angleVelocity = 0;
+  }
   
   for (int i = lastVelocitiesLength - 1; i > 0; i--) {
     lastVelocities[i] = lastVelocities[i - 1];
@@ -96,16 +107,18 @@ void loop() {
   
   bool stagnantVelocity = true;
 
+  float stillRange = .005;
+
   for (int j = 0; j < lastVelocitiesLength - 1; j++) {
-    if (!inRange(lastVelocities[j], lastVelocities[j + 1] - .01, lastVelocities[j + 1] + .01)) {
+    if (!inRange(lastVelocities[j], lastVelocities[j + 1] - stillRange, lastVelocities[j + 1] + stillRange)) {
       stagnantVelocity = false;
 
     }
   }
 
   if (stagnantVelocity) {
-    correction += angleVelocity;
-    angleVelocity = 0;
+    //correction += angleVelocity;
+    //angleVelocity = 0;
   }
 
   angle += angleVelocity / checksPerSecond;
@@ -121,9 +134,6 @@ void loop() {
   */
   
   float correctionAmount = (targetAngle - angle) / 2;
-
-  //angle += correctionAmount / 10; // changing angle just for simulation, in real life this would change due valves closing/opening
-
 
   leftValveOpen = EQUALIBRIUM_OPEN - correctionAmount, 0, 1; // close more (inflate) to move to the right (positive correctionAmount)
   rightValveOpen = EQUALIBRIUM_OPEN + correctionAmount, 0, 1; // open more (deflate) to move to right (with positive correctionAmount)
@@ -151,22 +161,28 @@ void loop() {
   
   // ------------------// change pwm of valves
 
-  Serial.print((angle * (180 / PI))); Serial.print(" : "); Serial.print(leftValveOpen); Serial.print(" : "); Serial.print(rightValveOpen); Serial.println();
-  //Serial.println(correctionAmount);
+  //Serial.print((angle * (180 / PI))); Serial.print(" : "); Serial.print(leftValveOpen); Serial.print(" : "); Serial.print(rightValveOpen); Serial.print(" : "); Serial.print(correction); Serial.println();
+
+
+  // ------------------- // update counters
   
-  analogWrite(LEFT_VALVE_PIN, (leftValveOpen * leftValveOpen) * 255);
-  analogWrite(RIGHT_VALVE_PIN, (rightValveOpen * rightValveOpen) * 255);
+  bool leftOn = leftCalculateOn();
+  bool rightOn = rightCalculateOn();
+  
+  digitalWrite(LEFT_VALVE_PIN, leftOn * 255);
+  digitalWrite(RIGHT_VALVE_PIN, rightOn * 255);
+
+
+  
+  //analogWrite(LEFT_VALVE_PIN, (leftValveOpen * leftValveOpen) * 255);
+  //analogWrite(RIGHT_VALVE_PIN, (rightValveOpen * rightValveOpen) * 255);
 
   // ------------------// encoder testing
 
   encoder.tick();
 
   int currentPosition = encoder.getPosition();
-
-  if (currentPosition != lastPosition) {
-    //Serial.println((int)(encoder.getDirection()));
-    lastPosition = currentPosition;
-  }
+  lastPosition = currentPosition;
 
 
   delay(1000 / checksPerSecond);
