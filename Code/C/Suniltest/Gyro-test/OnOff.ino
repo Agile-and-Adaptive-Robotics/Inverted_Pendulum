@@ -6,8 +6,8 @@
 // on counter keeps going up until it reaches open total
 
 
-int minimumOffTotal = 5;
-int minimumOnTotal = 5;
+int minimumOffTotal = 10;
+int minimumOnTotal = 10;
 
 
 
@@ -59,14 +59,14 @@ bool leftCalculateOn() {
       offTotal /= i;
       onTotal /= i;
 
-      if (minimumOffTotal < 5) {
+      if (offTotal < minimumOffTotal) {
         int changeBy = (int)((5 / offTotal) + .5);
         offTotal * changeBy;
         onTotal * changeBy;
       }
   
       
-      if (minimumOnTotal < 5) {
+      if (onTotal < minimumOnTotal) {
         int changeBy = (int)((5 / onTotal) + .5);
         offTotal * changeBy;
         onTotal * changeBy;
@@ -130,14 +130,14 @@ bool rightCalculateOn() {
       onTotal /= i;
 
       
-      if (minimumOffTotal < 5) {
+      if (offTotal < minimumOffTotal) {
         int changeBy = (int)((5 / offTotal) + .5);
         offTotal * changeBy;
         onTotal * changeBy;
       }
   
       
-      if (minimumOnTotal < 5) {
+      if (onTotal < minimumOnTotal) {
         int changeBy = (int)((5 / onTotal) + .5);
         offTotal * changeBy;
         onTotal * changeBy;
@@ -145,6 +145,8 @@ bool rightCalculateOn() {
     }
 
   }
+
+  //Serial.print(offTotal); Serial.print(" : "); Serial.print(onTotal); Serial.println();
 
   return on;
   
