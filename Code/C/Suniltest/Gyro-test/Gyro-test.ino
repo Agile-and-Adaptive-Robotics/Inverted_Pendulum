@@ -26,7 +26,7 @@ int checksPerSecond = 300;
 // ------------------ // Angle stuff
 
 
-float angle = PI / 2;
+float angle = PI / 2; // angle assumes that it is straight up on start
 float angleVelocity = 0;
 const float targetAngle = PI / 2; // angle straight up (90 degrees)
 
@@ -123,7 +123,7 @@ void loop() {
 
   angle += angleVelocity / checksPerSecond;
 
-  //Serial.println(angle * (180 / PI));
+  Serial.println(angle * (180 / PI));
   //Serial.println(correction);
   
   // ------------------ // calculate pwm to send to valves
