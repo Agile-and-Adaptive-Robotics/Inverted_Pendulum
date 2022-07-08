@@ -85,7 +85,7 @@ uint8_t manualTransferByte(uint8_t b) {
     digitalWrite(MOSI, currentBit); // write MOSI to value of current bit to be read
 
     //delayMicroseconds(waitTime); // wait for signal to be set
-    delay(50);
+    delay(200);
 
     digitalWrite(SCK, HIGH); // write clock to high to signal slave to read the MOSI value
 
@@ -95,7 +95,7 @@ uint8_t manualTransferByte(uint8_t b) {
     if (digitalRead(MISO)) receivedByte |= digitalRead(MISO); // add MISO signal to the end of the received byte
 
     //delayMicroseconds(waitTime); // wait for slave to read the signal
-    delay(50);
+    delay(200);
     
     digitalWrite(SCK, LOW); // finish clock cycle
 
@@ -209,7 +209,7 @@ SPR1 and SPR0 - Sets the SPI speed, 00 is fastest (4MHz) 11 is slowest (250KHz)
 
   delay(10);
 
-/*
+/* Instructions from Atmel datasheet:
 1. Power-up sequence:
 Apply power between VCC and GND while RESET and SCK are set to “0”. In some systems, the programmer can
 not guarantee that SCK is held low during power-up. In this case, RESET must be given a positive pulse of at
@@ -259,7 +259,7 @@ Table 27-16. Typical Wait Delay Before Writing the Next
 
   delay(100);
 
-  // erase program memory and EEPROM
+  // erase program memory and EEPROM ***** THIS WORKED I THINK !!!!! ***** (blink program stopped running after I executed the program with this)
 
   printHex(manualTransferByte(chipErase[0]));
   printHex(manualTransferByte(chipErase[1]));
