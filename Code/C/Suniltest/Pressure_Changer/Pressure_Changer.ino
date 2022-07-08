@@ -1,13 +1,13 @@
 #define RIGHT_BUTTON_PIN 3 // ** change these **
-#define LEFT_BUTTON_PIN 4
+#define LEFT_BUTTON_PIN 2
 
-#define RIGHT_VALVE_PIN 6
-#define LEFT_VALVE_PIN 5
+#define RIGHT_VALVE_PIN 9
+#define LEFT_VALVE_PIN 10
 
-#define PRESSURE_SENSOR_PIN 7 // analog pin
+#define PRESSURE_SENSOR_PIN A7 // analog pin
 
 const float MIN_PRESSURE = 0; // ** change these with minimum and maximum pressures that the pressure sensor returns **
-const float MAX_PRESSURE = 255;
+const float MAX_PRESSURE = 1023;
 
 
 
@@ -38,7 +38,7 @@ void loop() {
 
   // ------------- Button inputs -------------- //
 
-  float moveSpeed = .01; // ** increase this if it's inflating too slow ** (derivative of target pressure kinda)
+  float moveSpeed = 8; // ** increase this if it's inflating too slow ** (derivative of target pressure kinda)
 
   if (digitalRead(RIGHT_BUTTON_PIN)) { // increase target pressure
     targetPressure += moveSpeed;
@@ -55,31 +55,32 @@ void loop() {
   
   int currentPressure = analogRead(PRESSURE_SENSOR_PIN);
 
-  float allowedRange = 1; // acceptable range/2 for the pressure
+  float allowedRange = 15; // acceptable range/2 for the pressure
   if (inRange(currentPressure, targetPressure - allowedRange, targetPressure + allowedRange)) { // stop
     digitalWrite(RIGHT_VALVE_PIN, HIGH);
     digitalWrite(LEFT_VALVE_PIN, LOW);
   }
 
   else if (currentPressure < targetPressure) { // inflate
-    digitalWrite(RIGHT_VALVE_PIN, LOW);
-    digitalWrite(LEFT_VALVE_PIN, LOW);
+    digitalWrite(RIGHT_VALVE_PIN, HIGH);
+    digitalWrite(LEFT_VALVE_PIN, HIGH);
   }
 
   else if (currentPressure > targetPressure) { // deflate
-    digitalWrite(RIGHT_VALVE_PIN, HIGH);
-    digitalWrite(LEFT_VALVE_PIN, HIGH);
+    digitalWrite(RIGHT_VALVE_PIN, LOW);
+    digitalWrite(LEFT_VALVE_PIN, LOW);
   }
 
   
   // ------------- Debugging -------------- //
 
-  Serial.print("target pressure: "); Serial.println(targetPressure); // these should also work with the Serial Plotter I think
+  Serial.print("target pressure: "); Serial.print(targetPressure);// these should also work with the Serial Plotter I think 
+  Serial.print("\t");
   Serial.print("current pressure: "); Serial.println(currentPressure);
   
   // ------------- Wait till next check (can delete if you want but it might cause inconsistencies when messing with other parts of code) -------------- //
 
-  delay(1);
+  delay(0);
 
 }
 
