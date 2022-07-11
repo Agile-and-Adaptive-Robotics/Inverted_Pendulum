@@ -48,13 +48,14 @@ bool inRange(float x, float a, float b) { // returns if x is in between a and b
 }
 
 void loop() {
-  int checksPerSecond = 1000;
+  int checksPerSecond = 500;
   
   static float targetPressure;
 
   // ------------- Button inputs -------------- //
+  
 
-  float moveSpeed = .01; // ** increase this if it's inflating too slow ** (derivative of target pressure kinda)
+  float moveSpeed = PI/1000; // ** increase this if it's inflating too slow ** (derivative of target pressure kinda)
 
   if (digitalRead(RIGHT_BUTTON_PIN)) { // increase target pressure
     targetPressure += moveSpeed;
@@ -73,26 +74,32 @@ void loop() {
   static int loopCounter = 0;
   loopCounter++;
 
-  static float angle = PI / 2; // angle assumes that it is straight up on start
+  static float angle = 0; // angle assumes that it is straight up on start
   float angleVelocity = 0;
   const float targetAngle = PI / 2; // angle straight up (90 degrees)
 
-  float correction = .141;
+  float correction = 0.0523;
 
 
   sensors_event_t event;
   gyro.getEvent(&event);
   
-  if (loopCounter > 2) {
+  if (loopCounter > 10) {
     angleVelocity = event.gyro.z - correction;
   } else {
     angleVelocity = 0;
   }
 
-  angle += angleVelocity / checksPerSecond;
+  static float lastTime = 0;
 
-  Serial.println(angle * (180 / PI));
+  float currentTime = millis();
+
   
+
+  angle -= angleVelocity * ((currentTime - lastTime) / 1000);
+
+
+  lastTime = currentTime;
 
   // ------------- Valve control -------------- //
   
@@ -100,7 +107,7 @@ void loop() {
   float currentPressure = angle;
   
 
-  float allowedRange = 15; // acceptable range/2 for the pressure
+  float allowedRange = 0.015; // acceptable range/2 for the pressure
   if (inRange(currentPressure, targetPressure - allowedRange, targetPressure + allowedRange)) { // stop
     digitalWrite(RIGHT_VALVE_PIN, HIGH);
     digitalWrite(LEFT_VALVE_PIN, LOW);
@@ -118,10 +125,41 @@ void loop() {
 
   
   // ------------- Debugging -------------- //
-
-  Serial.print("target pressure: "); Serial.print(targetPressure);// these should also work with the Serial Plotter I think 
+  Serial.print(angle * (180 / PI));
   Serial.print("\t");
-  Serial.print("current pressure: "); Serial.println(currentPressure);
+  Serial.print("target angle: "); 
+  Serial.println(targetPressure * (180 / PI));
+  Serial.print("\t");
+
+  int rollAmount = 100;
+  static float lastVelocities[100];
+  float rollingTotal = 0;
+
+  for (int i = rollAmount - 1; i > 0; i--) {
+    lastVelocities[i] = lastVelocities[i-1];
+    rollingTotal += lastVelocities[i];
+  } lastVelocities[0] = angleVelocity;
+    rollingTotal += lastVelocities[0];
+
+  float rollingVelocity = rollingTotal / rollAmount;
+
+
+
+  static float oldAverage = .05;
+  
+  float beta = 0.001;
+  float newAverage = oldAverage * (1 - beta) + angleVelocity * (beta);
+  
+  oldAverage = newAverage;
+
+  
+  //Serial.print(angleVelocity * 1000);
+
+  //Serial.print("\t");
+  
+  //Serial.println((newAverage)*1000);// these should also work with the Serial Plotter I think 
+ // Serial.print("\t");
+ // Serial.print("current pressure: "); Serial.println(currentPressure);
   
   // ------------- Wait till next check (can delete if you want but it might cause inconsistencies when messing with other parts of code) -------------- //
 
