@@ -4,7 +4,7 @@
 #define BAUDRATE 19200
 
 
-// normal spi pins (10, 11, 12, 13 were acting weird)
+// normal spi pins (10, 11, 12, 13) were acting weird
 
 #define MISO 5
 #define MOSI 2
