@@ -36,6 +36,8 @@ void setup() {
   if (!gyro.begin()) {
     Serial.println("gyro not working");
   }
+
+  Serial.println("Starting");
 }
 
 bool inRange(float x, float a, float b) { // returns if x is in between a and b
@@ -49,7 +51,7 @@ bool inRange(float x, float a, float b) { // returns if x is in between a and b
 
 void loop() {
   int checksPerSecond = 1000;
-  
+
   static float targetPressure;
 
   // ------------- Button inputs -------------- //
@@ -78,7 +80,6 @@ void loop() {
   const float targetAngle = PI / 2; // angle straight up (90 degrees)
 
   float correction = .141;
-
 
   sensors_event_t event;
   gyro.getEvent(&event);
@@ -125,7 +126,7 @@ void loop() {
   
   // ------------- Wait till next check (can delete if you want but it might cause inconsistencies when messing with other parts of code) -------------- //
 
-  delay(0);
+  delay(1000 / checksPerSecond);
 
 }
 
