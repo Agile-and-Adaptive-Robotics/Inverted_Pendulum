@@ -3,14 +3,15 @@ void setup() {
   while(!Serial);
 
   int a = 2;
-  int b = 5;
+  int b = 257;
 
+
+  Serial.print(b & 0xFF);
+  Serial.print((uint8_t) b);
 
   Serial.println();
 
-  for (int i = 0; i < 10; i++) {
-    Serial.print(a << i); Serial.print(", ");
-  }
+  
 
 }
 

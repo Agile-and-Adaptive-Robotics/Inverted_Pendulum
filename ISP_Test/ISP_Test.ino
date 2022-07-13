@@ -7,9 +7,9 @@
 // normal spi pins (10, 11, 12, 13) were acting weird
 
 #define MISO 5
-#define MOSI 2
-#define SCK 6
-#define SS 10
+#define MOSI 6
+#define SCK 3
+#define SS 7
 
 #define VCC 8
 #define GND 7
@@ -21,10 +21,16 @@
 #define READ  3
 #define WRITE 2
 
+const unsigned int numPages = 256;
+const unsigned int pageSize = 64;
+
+unsigned int currentAddress = 0;
+
 // programming codes
 
 uint8_t programmingEnable[4] = {0xAC, 0x53, 0x00, 0x00};
 uint8_t chipErase[4] = {0xAC, 0x80, 0x00, 0x00};
+
 
 byte clr;
 uint8_t buff[128]; // holds data in the data buffer (128 bytes of data)
@@ -41,6 +47,16 @@ void printHex(uint8_t num) {
 
   if (secondDigit < 10) Serial.println(secondDigit);
   else Serial.println((char)(secondDigit + 55));
+}
+
+
+void printInBits(uint8_t b) {
+  int toPrint = b;
+  for (int i = 0; i < 8; i++) {
+    Serial.print((b & 128) ? "1" : "0");
+    b <<= 1;
+  }
+  Serial.print(": "); printHex(toPrint); Serial.println("");
 }
 
 
@@ -85,7 +101,7 @@ uint8_t manualTransferByte(uint8_t b) {
     digitalWrite(MOSI, currentBit); // write MOSI to value of current bit to be read
 
     //delayMicroseconds(waitTime); // wait for signal to be set
-    delay(200);
+    delay(100);
 
     digitalWrite(SCK, HIGH); // write clock to high to signal slave to read the MOSI value
 
@@ -95,7 +111,7 @@ uint8_t manualTransferByte(uint8_t b) {
     if (digitalRead(MISO)) receivedByte |= digitalRead(MISO); // add MISO signal to the end of the received byte
 
     //delayMicroseconds(waitTime); // wait for slave to read the signal
-    delay(200);
+    delay(100);
     
     digitalWrite(SCK, LOW); // finish clock cycle
 
@@ -104,6 +120,7 @@ uint8_t manualTransferByte(uint8_t b) {
 
   }
   Serial.print(": "); printHex(toPrint);
+  printHex(receivedByte);
 
   return receivedByte;
 }
@@ -116,15 +133,36 @@ uint8_t transfer4Bytes(uint8_t a, uint8_t b, uint8_t c, uint8_t d) {
   return manualTransferByte(d);
 }
 
-void printInBits(uint8_t b) {
-  int toPrint = b;
-  for (int i = 0; i < 8; i++) {
-    Serial.print((b & 128) ? "1" : "0");
-    b <<= 1;
-  }
-  Serial.print(": "); printHex(toPrint); Serial.println("");
+
+void loadWordToPageBuffer(uint8_t lowByte, uint8_t highByte) {
+  // ------- load low byte ------- // send code with address and data
+  manualTransferByte(0x40);                     // first byte of code
+  manualTransferByte(0x00);                     // second byte of code
+  manualTransferByte((uint8_t) currentAddress); // send address
+  manualTransferByte(lowByte);                  // send byte to load
+
+  currentAddress++; // new address for next byte
+
+  delay(100); // wait for byte to be written
+// ------------------------------------------------- //
+  
+  // ------- load high byte ------- // send code with address and data
+  manualTransferByte(0x48);
+  manualTransferByte(0x00);
+  manualTransferByte((uint8_t) (currentAddress - 1)); // send address of LSB
+  manualTransferByte(highByte);
+  
+  currentAddress++; // new address for next byte
+  
+  delay(100); // wait for byte to be written
 }
 
+uint8_t writePageBufferToFlash(uint8_t pageStartAddress, uint8_t pageEndAddress) {
+  manualTransferByte(0x4C);             // instruction code (from datasheet)
+  manualTransferByte(pageStartAddress); // address of most important bit of page
+  manualTransferByte(pageEndAddress);   // address of least important bit of page
+  manualTransferByte(0x00);             // instruction code (from datasheet)
+}
 
 
 void setup() {
@@ -167,25 +205,20 @@ SPR1 and SPR0 - Sets the SPI speed, 00 is fastest (4MHz) 11 is slowest (250KHz)
   // used for: control, data, and status
 
 
-  pinMode(VCC, OUTPUT);
-
-  pinMode(GND, OUTPUT);
+  pinMode(A2, OUTPUT);
+  pinMode(A4, OUTPUT);
 
 
   pinMode(MISO, INPUT);
-
   pinMode(MOSI, OUTPUT);
-
   pinMode(SCK, OUTPUT);
-
   pinMode(SS, OUTPUT);
 
   digitalWrite(SS, HIGH); // disable signal for now
 
   
-  digitalWrite(VCC, HIGH);
-  
-  digitalWrite(GND, LOW);
+  digitalWrite(A2, HIGH);
+  digitalWrite(A4, LOW);
 
 
   // SPI control register settings:
@@ -250,24 +283,44 @@ Table 27-16. Typical Wait Delay Before Writing the Next
   digitalWrite(SS, LOW);
 
   delay(20);
+  Serial.println("---- programming enable ----");
   
-  printHex(manualTransferByte(programmingEnable[0]));
-  printHex(manualTransferByte(programmingEnable[1]));
-  printHex(manualTransferByte(programmingEnable[2]));
-  printHex(manualTransferByte(programmingEnable[3]));
+  manualTransferByte(programmingEnable[0]);
+  manualTransferByte(programmingEnable[1]);
+  manualTransferByte(programmingEnable[2]);
+  manualTransferByte(programmingEnable[3]);
 
 
   delay(100);
+  Serial.println("---- chip erase ----");
 
   // erase program memory and EEPROM ***** THIS WORKED I THINK !!!!! ***** (blink program stopped running after I executed the program with this)
 
-  printHex(manualTransferByte(chipErase[0]));
-  printHex(manualTransferByte(chipErase[1]));
-  printHex(manualTransferByte(chipErase[2]));
-  printHex(manualTransferByte(chipErase[3]));
+  //manualTransferByte(chipErase[0]);
+  //manualTransferByte(chipErase[1]);
+  //manualTransferByte(chipErase[2]);
+  //manualTransferByte(chipErase[3]);
 
 
   delay(20); // wait for memory to erase (recommended by atmel is 9.0ms)
+
+  Serial.println("---- load in data to page buffer ----");
+
+  // transfer data
+
+  unsigned int startAddress = currentAddress;
+
+  for (int i = 0; i < 64; i += 2) {
+    //loadWordToPageBuffer(i, i + 1);
+  }
+
+  unsigned int endAddress = currentAddress - 1;
+
+  Serial.println("---- write page data to flash ----");
+
+  
+  
+  //writePageBufferToFlash(startAddress, endAddress);
 
   
 
