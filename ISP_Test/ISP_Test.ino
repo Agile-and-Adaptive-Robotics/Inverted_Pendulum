@@ -11,15 +11,11 @@
 #define SCK 3
 #define SS 7
 
-#define VCC 8
-#define GND 7
+#define RESET 8
 
-#define WREN  6
-#define WRDI  4
-#define RDSR  5
-#define WRSR  1
-#define READ  3
-#define WRITE 2
+#define VCC 9
+#define GND 10
+
 
 const unsigned int numPages = 256;
 const unsigned int pageSize = 64;
@@ -32,8 +28,119 @@ uint8_t programmingEnable[4] = {0xAC, 0x53, 0x00, 0x00};
 uint8_t chipErase[4] = {0xAC, 0x80, 0x00, 0x00};
 
 
-byte clr;
-uint8_t buff[128]; // holds data in the data buffer (128 bytes of data)
+uint8_t data[128]; // 128 bytes of data
+
+
+
+
+// ------------------ assebly to opcode program ------------------ //
+
+
+
+
+uint16_t ldi(unsigned int registerNum, int value) { // returns opcode for loading value into selected register
+  uint16_t opcode = 0xE; // put in load code
+  opcode <<= 4;
+
+  opcode |= (int)(value / 16); // put in first hex digit of value
+  opcode <<= 4;
+
+  opcode |= registerNum - 16; // put in register number
+  opcode <<= 4;
+
+  opcode |= (int)(value % 16); // put in second hex digit of value
+
+  return opcode;
+}
+
+
+
+uint16_t out(int value, unsigned int registerNum) {
+  uint16_t opcode = 0xB; // put in out code
+  opcode <<= 4;
+
+  unsigned int secondDigit = 0x8;
+  secondDigit += ((int)(registerNum / 16) * 2) + (registerNum > 15);
+  opcode |= secondDigit;
+  opcode <<= 4;
+
+  if (registerNum > 15) registerNum -= 16;
+  opcode |= registerNum; // put in register number
+  opcode <<= 4;
+
+  opcode |= (int)(value % 16); // put in second hex digit of value
+
+  return opcode;
+}
+
+
+
+
+uint16_t eor(unsigned int registerNum1, unsigned int registerNum2) { // returns opcode for eor two registers
+  uint16_t opcode = 0x2;
+  opcode <<= 4;
+
+  if (registerNum1 < 16 && registerNum2 < 16) {
+    opcode |= 0x4;
+  } else if (registerNum1 > 15 && registerNum2 < 16) {
+    opcode |= 0x5;
+    registerNum1 -= 16;
+  } else if (registerNum1 < 16 && registerNum2 > 15) {
+    opcode |= 0x6;
+    registerNum2 -= 16;
+  } else {
+    opcode |= 0x7;
+    registerNum1 -= 16;
+    registerNum2 -= 16;
+  }
+
+  opcode <<= 4;
+  
+  opcode |= registerNum1;
+  opcode <<= 4;
+
+  opcode |= registerNum2;
+
+  return opcode;
+}
+
+
+
+uint16_t adc(unsigned int registerNum1, unsigned int registerNum2) { // returns opcode for adding register2 to register1
+  uint16_t opcode = 0x1;
+  opcode <<= 4;
+
+  if (registerNum1 < 16 && registerNum2 < 16) {
+    opcode |= 0xC;
+  } else if (registerNum1 > 15 && registerNum2 < 16) {
+    opcode |= 0xD;
+    registerNum1 -= 16;
+  } else if (registerNum1 < 16 && registerNum2 > 15) {
+    opcode |= 0xE;
+    registerNum2 -= 16;
+  } else {
+    opcode |= 0xF;
+    registerNum1 -= 16;
+    registerNum2 -= 16;
+  }
+
+  opcode <<= 4;
+  
+  opcode |= registerNum1;
+  opcode <<= 4;
+
+  opcode |= registerNum2;
+
+  return opcode;
+}
+
+int codeLength = 3;
+uint16_t code[3] = {
+  ldi (16, 1),    // load 00000001 to register 16
+  out (DDRB, 16), // write register 16 to DDRB
+  out (PORTB, 16) // write register 16 to PORTB
+}
+
 
 
 
@@ -101,7 +208,7 @@ uint8_t manualTransferByte(uint8_t b) {
     digitalWrite(MOSI, currentBit); // write MOSI to value of current bit to be read
 
     //delayMicroseconds(waitTime); // wait for signal to be set
-    delay(100);
+    delay(50);
 
     digitalWrite(SCK, HIGH); // write clock to high to signal slave to read the MOSI value
 
@@ -111,7 +218,7 @@ uint8_t manualTransferByte(uint8_t b) {
     if (digitalRead(MISO)) receivedByte |= digitalRead(MISO); // add MISO signal to the end of the received byte
 
     //delayMicroseconds(waitTime); // wait for slave to read the signal
-    delay(100);
+    delay(50);
     
     digitalWrite(SCK, LOW); // finish clock cycle
 
@@ -120,7 +227,7 @@ uint8_t manualTransferByte(uint8_t b) {
 
   }
   Serial.print(": "); printHex(toPrint);
-  printHex(receivedByte);
+  Serial.print("received: "); printHex(receivedByte);
 
   return receivedByte;
 }
@@ -134,18 +241,7 @@ uint8_t transfer4Bytes(uint8_t a, uint8_t b, uint8_t c, uint8_t d) {
 }
 
 
-void loadWordToPageBuffer(uint8_t lowByte, uint8_t highByte) {
-  // ------- load low byte ------- // send code with address and data
-  manualTransferByte(0x40);                     // first byte of code
-  manualTransferByte(0x00);                     // second byte of code
-  manualTransferByte((uint8_t) currentAddress); // send address
-  manualTransferByte(lowByte);                  // send byte to load
-
-  currentAddress++; // new address for next byte
-
-  delay(100); // wait for byte to be written
-// ------------------------------------------------- //
-  
+void loadWordToPageBuffer(uint8_t highByte, uint8_t lowByte) {
   // ------- load high byte ------- // send code with address and data
   manualTransferByte(0x48);
   manualTransferByte(0x00);
@@ -154,6 +250,18 @@ void loadWordToPageBuffer(uint8_t lowByte, uint8_t highByte) {
   
   currentAddress++; // new address for next byte
   
+  delay(100); // wait for byte to be written
+  
+// ------------------------------------------------- //
+
+  // ------- load low byte ------- // send code with address and data
+  manualTransferByte(0x40);                     // first byte of code
+  manualTransferByte(0x00);                     // second byte of code
+  manualTransferByte((uint8_t) currentAddress); // send address
+  manualTransferByte(lowByte);                  // send byte to load
+
+  currentAddress++; // new address for next byte
+
   delay(100); // wait for byte to be written
 }
 
@@ -165,6 +273,22 @@ uint8_t writePageBufferToFlash(uint8_t pageStartAddress, uint8_t pageEndAddress)
 }
 
 
+
+
+
+
+
+
+
+void pulseReset() {
+  digitalWrite(RESET, HIGH);
+
+  delay(20);
+
+  digitalWrite(RESET, LOW);
+}
+
+
 void setup() {
   Serial.begin(BAUDRATE);
   while(!Serial);
@@ -173,8 +297,6 @@ void setup() {
   Serial.println("--------- Starting ---------");
   Serial.println("");
 
-
-  SPI.begin();
 
 
   /* SPCR
@@ -205,8 +327,8 @@ SPR1 and SPR0 - Sets the SPI speed, 00 is fastest (4MHz) 11 is slowest (250KHz)
   // used for: control, data, and status
 
 
-  pinMode(A2, OUTPUT);
-  pinMode(A4, OUTPUT);
+  pinMode(VCC, OUTPUT);
+  pinMode(GND, OUTPUT);
 
 
   pinMode(MISO, INPUT);
@@ -214,11 +336,24 @@ SPR1 and SPR0 - Sets the SPI speed, 00 is fastest (4MHz) 11 is slowest (250KHz)
   pinMode(SCK, OUTPUT);
   pinMode(SS, OUTPUT);
 
+  pinMode(RESET, OUTPUT);
+
   digitalWrite(SS, HIGH); // disable signal for now
 
+  digitalWrite(RESET, LOW);
+  digitalWrite(SCK, LOW);
+
+  delay(100);
   
-  digitalWrite(A2, HIGH);
-  digitalWrite(A4, LOW);
+  digitalWrite(VCC, HIGH);
+  digitalWrite(GND, LOW);
+
+  delay(100);
+
+  // pulse RESET just to make sure
+
+  pulseReset();
+
 
 
   // SPI control register settings:
@@ -235,10 +370,6 @@ SPR1 and SPR0 - Sets the SPI speed, 00 is fastest (4MHz) 11 is slowest (250KHz)
   //.. leftmost bit is the most significant because it has the most affect on the number
   
 
-  // clear SPSR and SPDR
-
-  //clr = SPSR;
-  //clr = SPDR;
 
   delay(10);
 
@@ -287,8 +418,29 @@ Table 27-16. Typical Wait Delay Before Writing the Next
   
   manualTransferByte(programmingEnable[0]);
   manualTransferByte(programmingEnable[1]);
-  manualTransferByte(programmingEnable[2]);
+  uint8_t echo = manualTransferByte(programmingEnable[2]);
   manualTransferByte(programmingEnable[3]);
+
+  int maxTries = 5;
+  int tryAgainCounter = 0;
+  while (echo != 0x53 && tryAgainCounter < maxTries) {
+    tryAgainCounter++;
+
+    Serial.println("---- out of sync, trying again ----");
+
+    pulseReset();
+
+    manualTransferByte(programmingEnable[0]);
+    manualTransferByte(programmingEnable[1]);
+    echo = manualTransferByte(programmingEnable[2]);
+    manualTransferByte(programmingEnable[3]);
+    
+  }
+
+  if (tryAgainCounter == maxTries) {
+    Serial.println("---- failed to get in sync ----");
+    while(1); // stop program (infinite loop)
+  }
 
 
   delay(100);
@@ -296,10 +448,10 @@ Table 27-16. Typical Wait Delay Before Writing the Next
 
   // erase program memory and EEPROM ***** THIS WORKED I THINK !!!!! ***** (blink program stopped running after I executed the program with this)
 
-  //manualTransferByte(chipErase[0]);
-  //manualTransferByte(chipErase[1]);
-  //manualTransferByte(chipErase[2]);
-  //manualTransferByte(chipErase[3]);
+  manualTransferByte(chipErase[0]);
+  manualTransferByte(chipErase[1]);
+  manualTransferByte(chipErase[2]);
+  manualTransferByte(chipErase[3]);
 
 
   delay(20); // wait for memory to erase (recommended by atmel is 9.0ms)
@@ -310,8 +462,11 @@ Table 27-16. Typical Wait Delay Before Writing the Next
 
   unsigned int startAddress = currentAddress;
 
-  for (int i = 0; i < 64; i += 2) {
-    //loadWordToPageBuffer(i, i + 1);
+  for (int i = 0; i < codeLength; i++) {
+    uint8_t highByte = (code[i] & 0xFF00) >> 4;
+    uint8_t lowByte = code[i] & 0xFF;
+
+    loadWordToPageBuffer(highByte, lowByte);
   }
 
   unsigned int endAddress = currentAddress - 1;
@@ -320,7 +475,7 @@ Table 27-16. Typical Wait Delay Before Writing the Next
 
   
   
-  //writePageBufferToFlash(startAddress, endAddress);
+  writePageBufferToFlash(startAddress, endAddress);
 
   
 
