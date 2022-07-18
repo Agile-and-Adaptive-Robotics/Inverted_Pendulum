@@ -1,4 +1,4 @@
-
+/*
 #include <SPI.h>
 
 #define BAUDRATE 19200
@@ -13,8 +13,8 @@
 
 #define RESET 8
 
-#define VCC 9
-#define GND 10
+#define VCC 10
+#define GND 12
 
 
 const unsigned int numPages = 256;
@@ -60,7 +60,7 @@ uint16_t out(int value, unsigned int registerNum) {
   opcode <<= 4;
 
   unsigned int secondDigit = 0x8;
-  secondDigit += ((int)(registerNum / 16) * 2) + (registerNum > 15);
+  secondDigit += ((int)(value / 16)) * 2 + (registerNum > 15);
   opcode |= secondDigit;
   opcode <<= 4;
 
@@ -134,12 +134,7 @@ uint16_t adc(unsigned int registerNum1, unsigned int registerNum2) { // returns 
   return opcode;
 }
 
-int codeLength = 3;
-uint16_t code[3] = {
-  ldi (16, 1),    // load 00000001 to register 16
-  out (DDRB, 16), // write register 16 to DDRB
-  out (PORTB, 16) // write register 16 to PORTB
-}
+const uint16_t ret = 0x9508;
 
 
 
@@ -183,7 +178,7 @@ char transferChar(uint8_t data) {
    */
 
   
-
+/*
   return SPDR;
 
 }
@@ -208,7 +203,7 @@ uint8_t manualTransferByte(uint8_t b) {
     digitalWrite(MOSI, currentBit); // write MOSI to value of current bit to be read
 
     //delayMicroseconds(waitTime); // wait for signal to be set
-    delay(50);
+    delay(10);
 
     digitalWrite(SCK, HIGH); // write clock to high to signal slave to read the MOSI value
 
@@ -218,7 +213,7 @@ uint8_t manualTransferByte(uint8_t b) {
     if (digitalRead(MISO)) receivedByte |= digitalRead(MISO); // add MISO signal to the end of the received byte
 
     //delayMicroseconds(waitTime); // wait for slave to read the signal
-    delay(50);
+    delay(10);
     
     digitalWrite(SCK, LOW); // finish clock cycle
 
@@ -245,7 +240,7 @@ void loadWordToPageBuffer(uint8_t highByte, uint8_t lowByte) {
   // ------- load high byte ------- // send code with address and data
   manualTransferByte(0x48);
   manualTransferByte(0x00);
-  manualTransferByte((uint8_t) (currentAddress - 1)); // send address of LSB
+  manualTransferByte((uint8_t) (currentAddress)); // send address of LSB
   manualTransferByte(highByte);
   
   currentAddress++; // new address for next byte
@@ -257,7 +252,7 @@ void loadWordToPageBuffer(uint8_t highByte, uint8_t lowByte) {
   // ------- load low byte ------- // send code with address and data
   manualTransferByte(0x40);                     // first byte of code
   manualTransferByte(0x00);                     // second byte of code
-  manualTransferByte((uint8_t) currentAddress); // send address
+  manualTransferByte((uint8_t) (currentAddress - 1)); // send address
   manualTransferByte(lowByte);                  // send byte to load
 
   currentAddress++; // new address for next byte
@@ -299,6 +294,7 @@ void setup() {
 
 
 
+
   /* SPCR
 | 7    | 6    | 5    | 4    | 3    | 2    | 1    | 0    |
 | SPIE | SPE  | DORD | MSTR | CPOL | CPHA | SPR1 | SPR0 |
@@ -317,7 +313,7 @@ CPHA - Samples data on the falling edge of the data clock when 1, rising edge wh
 
 SPR1 and SPR0 - Sets the SPI speed, 00 is fastest (4MHz) 11 is slowest (250KHz)
 */
-
+/*
 
   // . pull . down slave select pin
   // after . each data packet, slave select is pulled high to synchronize
@@ -372,7 +368,7 @@ SPR1 and SPR0 - Sets the SPI speed, 00 is fastest (4MHz) 11 is slowest (250KHz)
 
 
   delay(10);
-
+*/
 /* Instructions from Atmel datasheet:
 1. Power-up sequence:
 Apply power between VCC and GND while RESET and SCK are set to “0”. In some systems, the programmer can
@@ -410,7 +406,7 @@ Set RESET to “1”.
 Turn VCC power off.
 Table 27-16. Typical Wait Delay Before Writing the Next
  */
-
+/*
   digitalWrite(SS, LOW);
 
   delay(20);
@@ -446,7 +442,7 @@ Table 27-16. Typical Wait Delay Before Writing the Next
   delay(100);
   Serial.println("---- chip erase ----");
 
-  // erase program memory and EEPROM ***** THIS WORKED I THINK !!!!! ***** (blink program stopped running after I executed the program with this)
+  // erase program memory and EEPROM
 
   manualTransferByte(chipErase[0]);
   manualTransferByte(chipErase[1]);
@@ -454,7 +450,7 @@ Table 27-16. Typical Wait Delay Before Writing the Next
   manualTransferByte(chipErase[3]);
 
 
-  delay(20); // wait for memory to erase (recommended by atmel is 9.0ms)
+  delay(100); // wait for memory to erase (recommended by atmel is 9.0ms)
 
   Serial.println("---- load in data to page buffer ----");
 
@@ -462,8 +458,21 @@ Table 27-16. Typical Wait Delay Before Writing the Next
 
   unsigned int startAddress = currentAddress;
 
+
+  DDRB = 0x04;  // port b data register code
+  PORTB = 0x05; // port b data direction register code
+    
+  unsigned int codeLength = 3;
+  uint16_t code[3] = {
+    ldi (16, (1 << 6)),    // load 01000000 to register 16
+    out (DDRB, 16),        // write register 16 to DDRB
+    out (PORTB, 16)        // write register 16 to PORTB
+  };
+
+  delay(20);
+
   for (int i = 0; i < codeLength; i++) {
-    uint8_t highByte = (code[i] & 0xFF00) >> 4;
+    uint8_t highByte = code[i] >> 8;
     uint8_t lowByte = code[i] & 0xFF;
 
     loadWordToPageBuffer(highByte, lowByte);
@@ -471,23 +480,41 @@ Table 27-16. Typical Wait Delay Before Writing the Next
 
   unsigned int endAddress = currentAddress - 1;
 
+  
+
   Serial.println("---- write page data to flash ----");
 
   
   
   writePageBufferToFlash(startAddress, endAddress);
 
+  delay(100);
+
+
+  Serial.println("---- read flash data ----");
+
   
 
-
-/*
-  for (int i = 0; i < 128; i++) {
-    uint8_t receivedByte = manualTransferByte(127 - i);
-    Serial.print("sending: "); printInBits(127 - i);
-    Serial.print("receive: "); printInBits(receivedByte);
+  for (int i = startAddress; i <= endAddress; i++) {
+    manualTransferByte(0x28);
+    manualTransferByte(i);
+    manualTransferByte(i + 1);
+    manualTransferByte(0x00);  
   }
-*/
+
+
+  delay(1000);
+
+  pulseReset();
+
+  manualTransferByte(programmingEnable[0]);
+  manualTransferByte(programmingEnable[1]);
+  echo = manualTransferByte(programmingEnable[2]);
+  manualTransferByte(programmingEnable[3]);
+
   digitalWrite(SS, HIGH);
+
+  digitalWrite(RESET, HIGH); // commence normal operation
 
 
 
@@ -495,4 +522,4 @@ Table 27-16. Typical Wait Delay Before Writing the Next
 
 void loop() {
 
-}
+}*/

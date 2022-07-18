@@ -9,11 +9,11 @@ Adafruit_L3GD20_Unified gyro = Adafruit_L3GD20_Unified(20);
 
 // ------------------ // Constants
 
-#define RIGHT_BUTTON_PIN 3 // ** change these **
-#define LEFT_BUTTON_PIN 2
+#define RIGHT_BUTTON_PIN 18 // ** change these **
+#define LEFT_BUTTON_PIN 19
 
-#define RIGHT_VALVE_PIN 9
-#define LEFT_VALVE_PIN 10
+#define RIGHT_VALVE_PIN 16
+#define LEFT_VALVE_PIN 17
 
 #define PRESSURE_SENSOR_PIN A7 // analog pin
 
@@ -35,9 +35,8 @@ void setup() {
 
   if (!gyro.begin()) {
     Serial.println("gyro not working");
+    while(1); // stop program
   }
-
-  Serial.println("Starting");
 }
 
 bool inRange(float x, float a, float b) { // returns if x is in between a and b
@@ -50,24 +49,25 @@ bool inRange(float x, float a, float b) { // returns if x is in between a and b
 }
 
 void loop() {
-  int checksPerSecond = 1000;
-
-  static float targetPressure;
+  int checksPerSecond = 500;
+  
+  static float targetAngle;
 
   // ------------- Button inputs -------------- //
+  
 
-  float moveSpeed = .01; // ** increase this if it's inflating too slow ** (derivative of target pressure kinda)
+  float moveSpeed = PI/1000; // ** increase this if it's inflating too slow ** (derivative of target pressure kinda)
 
   if (digitalRead(RIGHT_BUTTON_PIN)) { // increase target pressure
-    targetPressure += moveSpeed;
+    targetAngle += moveSpeed;
   }
   
   if (digitalRead(LEFT_BUTTON_PIN)) { // decrease target pressure
-    targetPressure -= moveSpeed;
+    targetAngle -= moveSpeed;
   }
 
-  //if (targetPressure < MIN_PRESSURE) targetPressure = MIN_PRESSURE;
-  //if (targetPressure > MAX_PRESSURE) targetPressure = MAX_PRESSURE;
+  //if (targetAngle < MIN_PRESSURE) targetAngle = MIN_PRESSURE;
+  //if (targetAngle > MAX_PRESSURE) targetAngle = MAX_PRESSURE;
 
 
   // ------------- Calculate angle -------------- //
@@ -75,58 +75,61 @@ void loop() {
   static int loopCounter = 0;
   loopCounter++;
 
-  static float angle = PI / 2; // angle assumes that it is straight up on start
+  static float angle = 0; // angle assumes that it is straight up on start
   float angleVelocity = 0;
-  const float targetAngle = PI / 2; // angle straight up (90 degrees)
 
-  float correction = .141;
+  float correction = 0.0496;
+
 
   sensors_event_t event;
   gyro.getEvent(&event);
   
-  if (loopCounter > 2) {
+  if (loopCounter > 10) {
     angleVelocity = event.gyro.z - correction;
   } else {
     angleVelocity = 0;
   }
 
-  angle += angleVelocity / checksPerSecond;
-
-  Serial.println(angle * (180 / PI));
-  
+  static float lastTime = 0;
+  float currentTime = millis();
+  angle -= angleVelocity * ((currentTime - lastTime) / 1000);
+  lastTime = currentTime;
 
   // ------------- Valve control -------------- //
   
   //int currentPressure = analogRead(PRESSURE_SENSOR_PIN);
-  float currentPressure = angle;
+  float currentAngle = angle;
   
 
-  float allowedRange = 15; // acceptable range/2 for the pressure
-  if (inRange(currentPressure, targetPressure - allowedRange, targetPressure + allowedRange)) { // stop
+  float allowedRange = 0.015; // acceptable range/2 for the pressure
+  if (inRange(currentAngle, targetAngle - allowedRange, targetAngle + allowedRange)) { // stop
     digitalWrite(RIGHT_VALVE_PIN, HIGH);
     digitalWrite(LEFT_VALVE_PIN, LOW);
   }
 
-  else if (currentPressure < targetPressure) { // inflate
+  else if (currentAngle < targetAngle) { // inflate
     digitalWrite(RIGHT_VALVE_PIN, HIGH);
     digitalWrite(LEFT_VALVE_PIN, HIGH);
   }
 
-  else if (currentPressure > targetPressure) { // deflate
+  else if (currentAngle > targetAngle) { // deflate
     digitalWrite(RIGHT_VALVE_PIN, LOW);
     digitalWrite(LEFT_VALVE_PIN, LOW);
   }
 
   
   // ------------- Debugging -------------- //
-
-  Serial.print("target pressure: "); Serial.print(targetPressure);// these should also work with the Serial Plotter I think 
-  Serial.print("\t");
-  Serial.print("current pressure: "); Serial.println(currentPressure);
   
+  Serial.print(angle * (180 / PI));
+  Serial.print("\t");
+  Serial.print("target angle: "); 
+  Serial.println(targetAngle * (180 / PI));
+  Serial.print("\t");
+
+
   // ------------- Wait till next check (can delete if you want but it might cause inconsistencies when messing with other parts of code) -------------- //
 
-  delay(1000 / checksPerSecond);
+  delay(0);
 
 }
 
