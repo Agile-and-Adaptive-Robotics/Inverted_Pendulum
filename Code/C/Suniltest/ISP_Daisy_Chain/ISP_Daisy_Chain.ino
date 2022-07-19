@@ -26,24 +26,43 @@ uint8_t data[128]; // 128 bytes of data
 const uint8_t PORTC_CODE = 0x08;
 const uint8_t DDRC_CODE = 0x07;
 
-uint16_t initializeProgrammer[16] = {
-  ldi ( 17, ((1<<3) | (1<<2) | (1<<1) | (1<<0)) ); // load 00001111 to register 17
-  out ( PORTC_CODE, 17 ); // set port c 0 - 4 to output
-    
-};
 
 
 
 unsigned int IDRegister = 16;
 
-uint16_t setIdentifiers[2] = {
-  subi( IDRegister, 1 ); // subtract 1 from id register (which was set to a number from last MCU)
-  
-};
 
 
 
 uint16_t programmerCode[10] = {
+  subi ( IDRegister, 1 ); // IDRegister was set to a number with program data
+
+  // * brne + however many bytes after this is over * // if IDRegister != 0 (skip to programming the next MCU)
+
+  // write program data to self //
+  // delete this program to clear space ? //
+
+
+  // ...... //
+
+
+
+
+  // * where brne skips to * //
+
+  
+  ldi ( 17,           0b01111111 );  // load 01111111 to register 17
+  out ( DDRC_CODE,    17         );  // load register 17 to portc: set Port C0 - C3 to output
+
+  // SPI pin locations: MOSI: 0, MISO: 1, SCK: 2, CS: 3, RESET: 4, VCC: 5, GND: 6
+
+  // load programmer code (this code) to program memory, program code to ?variable memory in flash?, and idcode to IDRegister
+
+  
+
+  
+
+  
   
 };
 
