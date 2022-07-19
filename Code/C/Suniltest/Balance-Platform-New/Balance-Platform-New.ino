@@ -30,9 +30,7 @@ void setup() {
 void setBackward() {
   
   digitalWrite(PIN_1, LOW);
-  digitalWrite(PIN_2, HIGH);
-  digitalWrite(PIN_3, HIGH);
-  digitalWrite(PIN_4, LOW);
+  digitalWrite(PIN_4, HIGH);
   
 }
 
@@ -41,9 +39,7 @@ void setBackward() {
 void setForward() {
   
   digitalWrite(PIN_1, HIGH);
-  digitalWrite(PIN_2, LOW);
-  digitalWrite(PIN_3, LOW);
-  digitalWrite(PIN_4, HIGH);
+  digitalWrite(PIN_4, LOW);
   
 }
 
@@ -67,7 +63,7 @@ void loop() {
 
 
   
-  delay(10);
+  delay(1000);
 
 
 

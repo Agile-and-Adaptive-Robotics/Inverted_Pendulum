@@ -20,6 +20,36 @@ uint8_t chipErase[4] = {0xAC, 0x80, 0x00, 0x00};
 uint8_t data[128]; // 128 bytes of data
 
 
+// --------------------------- programming capability assembly code ----------------------------- //
+
+
+const uint8_t PORTC_CODE = 0x08;
+const uint8_t DDRC_CODE = 0x07;
+
+uint16_t initializeProgrammer[16] = {
+  ldi ( 17, ((1<<3) | (1<<2) | (1<<1) | (1<<0)) ); // load 00001111 to register 17
+  out ( PORTC_CODE, 17 ); // set port c 0 - 4 to output
+    
+};
+
+
+
+unsigned int IDRegister = 16;
+
+uint16_t setIdentifiers[2] = {
+  subi( IDRegister, 1 ); // subtract 1 from id register (which was set to a number from last MCU)
+  
+};
+
+
+
+uint16_t programmerCode[10] = {
+  
+};
+
+
+
+
 
 
 

@@ -90,4 +90,20 @@ uint16_t adc(unsigned int registerNum1, unsigned int registerNum2) { // returns 
   return opcode;
 }
 
+
+uint16_t subi(unsigned int registerNum, unsigned int value) {
+  uint16_t opcode = 0x5;
+  opcode <<= 4;
+
+  opcode |= (int)(value / 16);
+  opcode <<= 4;
+
+  opcode |= registerNum - 16;
+  opcode <<= 4;
+
+  opcode |= (int)(value % 16);
+
+  return opcode;
+}
+
 const uint16_t ret = 0x9508;
