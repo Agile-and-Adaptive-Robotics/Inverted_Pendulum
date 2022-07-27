@@ -1,9 +1,9 @@
 
-#define PIN_1 2
-#define PIN_2 3
-#define PIN_3 4
-#define PIN_4 5
+#define S1 10
+#define S2 9
 
+#define LEFT_BUTTON_PIN 3
+#define RIGHT_BUTTON_PIN 2
 
 
 
@@ -16,32 +16,17 @@
 void setup() {
   Serial.begin(9600);
   
-  pinMode(PIN_1, OUTPUT);
-  pinMode(PIN_2, OUTPUT);
-  pinMode(PIN_3, OUTPUT);
-  pinMode(PIN_4, OUTPUT);
+  pinMode(S1, OUTPUT);
+  pinMode(S2, OUTPUT);
+
+  pinMode(LEFT_BUTTON_PIN,  INPUT);
+  pinMode(RIGHT_BUTTON_PIN, INPUT);
 
 
   
 
 }
 
-
-void setBackward() {
-  
-  digitalWrite(PIN_1, LOW);
-  digitalWrite(PIN_4, HIGH);
-  
-}
-
-
-
-void setForward() {
-  
-  digitalWrite(PIN_1, HIGH);
-  digitalWrite(PIN_4, LOW);
-  
-}
 
 
 
@@ -50,20 +35,35 @@ void setForward() {
 void loop() {
 
   static float speed = .5; // 0 to 1
+  static bool direction = 1; // 0 == backward, 1 == forward
 
 
-  if (calculateOn(speed)) {
-    setForward();
-    Serial.println("forward");
+  if (digitalRead(LEFT_BUTTON_PIN)) {
+    speed = 1;
+    direction = 0;
   }
-  else {
-    setBackward();
-    Serial.println("backward");
+  if (digitalRead(RIGHT_BUTTON_PIN)) {
+    speed = 1;
+    direction = 1;
+  }
+  
+  if (digitalRead(LEFT_BUTTON_PIN) && digitalRead(RIGHT_BUTTON_PIN)) {
+    speed = 0;
   }
 
+  if (!digitalRead(LEFT_BUTTON_PIN) && !digitalRead(RIGHT_BUTTON_PIN)) {
+    speed = 0;
+  }
+
+  digitalWrite(S1, speed);
+  digitalWrite(S2, direction);
+
+  Serial.print("speed: "); Serial.print(speed);
+  Serial.print("\t");
+  Serial.print("direction: "); Serial.println(direction);
 
   
-  delay(1000);
+  delay(10);
 
 
 

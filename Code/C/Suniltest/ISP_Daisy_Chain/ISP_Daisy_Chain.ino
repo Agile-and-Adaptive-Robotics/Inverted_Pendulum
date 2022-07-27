@@ -52,11 +52,17 @@ uint16_t programmerCode[10] = {
 
   
   ldi ( 17,           0b01111111 );  // load 01111111 to register 17
-  out ( DDRC_CODE,    17         );  // load register 17 to portc: set Port C0 - C3 to output
+  out ( DDRC_CODE,    17         );  // load register 17 to portc: set Port C0 - C6 to output
 
   // SPI pin locations: MOSI: 0, MISO: 1, SCK: 2, CS: 3, RESET: 4, VCC: 5, GND: 6
 
   // load programmer code (this code) to program memory, program code to ?variable memory in flash?, and idcode to IDRegister
+    // load one byte from programmer code into register 18
+    // set register 19 to address register and add one each loop
+    // 
+
+
+  // send byte loop
 
   
 

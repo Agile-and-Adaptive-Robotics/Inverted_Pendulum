@@ -9,17 +9,17 @@ Adafruit_L3GD20_Unified gyro = Adafruit_L3GD20_Unified(20);
 
 // ------------------ // Constants
 
-#define RIGHT_BUTTON_PIN 18 // ** change these **
-#define LEFT_BUTTON_PIN 19
+#define RIGHT_BUTTON_PIN 7 // ** change these **
+#define LEFT_BUTTON_PIN 6
 
-#define RIGHT_VALVE_PIN 16
-#define LEFT_VALVE_PIN 17
+#define LEFT_VALVE_PIN_1 10
+#define LEFT_VALVE_PIN_2 9
 
-#define PRESSURE_SENSOR_PIN A7 // analog pin
+#define RIGHT_VALVE_PIN_1 12
+#define RIGHT_VALVE_PIN_2 11
 
-const float MIN_PRESSURE = 0; // ** change these with minimum and maximum pressures that the pressure sensor returns **
-const float MAX_PRESSURE = 1023;
-
+#define LEFT_PRESSURE_PIN 1  // analog
+#define RIGHT_PRESSURE_PIN 0 // analog
 
 
 void setup() {
@@ -28,8 +28,11 @@ void setup() {
   pinMode(RIGHT_BUTTON_PIN, INPUT);
   pinMode(LEFT_BUTTON_PIN, INPUT);
 
-  pinMode(RIGHT_VALVE_PIN, OUTPUT);
-  pinMode(LEFT_VALVE_PIN, OUTPUT);
+  pinMode(LEFT_VALVE_PIN_1, OUTPUT);
+  pinMode(LEFT_VALVE_PIN_2, OUTPUT);
+
+  pinMode(RIGHT_VALVE_PIN_1, OUTPUT);
+  pinMode(RIGHT_VALVE_PIN_2, OUTPUT);
 
   gyro.enableAutoRange(true);
 
@@ -51,12 +54,12 @@ bool inRange(float x, float a, float b) { // returns if x is in between a and b
 void loop() {
   int checksPerSecond = 500;
   
-  static float targetAngle;
+  static float targetAngle = PI / 2;
 
   // ------------- Button inputs -------------- //
   
 
-  float moveSpeed = PI/1000; // ** increase this if it's inflating too slow ** (derivative of target pressure kinda)
+  float moveSpeed = PI/800; // ** increase this if it's inflating too slow ** (derivative of target pressure kinda)
 
   if (digitalRead(RIGHT_BUTTON_PIN)) { // increase target pressure
     targetAngle += moveSpeed;
@@ -66,19 +69,16 @@ void loop() {
     targetAngle -= moveSpeed;
   }
 
-  //if (targetAngle < MIN_PRESSURE) targetAngle = MIN_PRESSURE;
-  //if (targetAngle > MAX_PRESSURE) targetAngle = MAX_PRESSURE;
-
 
   // ------------- Calculate angle -------------- //
 
   static int loopCounter = 0;
   loopCounter++;
 
-  static float angle = 0; // angle assumes that it is straight up on start
+  static float angle = PI / 2; // angle assumes that it is straight up on start
   float angleVelocity = 0;
 
-  float correction = 0.0496;
+  float correction = 0.0476;
 
 
   sensors_event_t event;
@@ -102,30 +102,43 @@ void loop() {
   
 
   float allowedRange = 0.015; // acceptable range/2 for the pressure
-  if (inRange(currentAngle, targetAngle - allowedRange, targetAngle + allowedRange)) { // stop
-    digitalWrite(RIGHT_VALVE_PIN, HIGH);
-    digitalWrite(LEFT_VALVE_PIN, LOW);
+  if (targetAngle - allowedRange < currentAngle && currentAngle < targetAngle + allowedRange) { // stop
+    digitalWrite(LEFT_VALVE_PIN_1, HIGH);
+    digitalWrite(LEFT_VALVE_PIN_2, LOW);
+    
+    digitalWrite(RIGHT_VALVE_PIN_1, HIGH);
+    digitalWrite(RIGHT_VALVE_PIN_2, LOW);
   }
 
-  else if (currentAngle < targetAngle) { // inflate
-    digitalWrite(RIGHT_VALVE_PIN, HIGH);
-    digitalWrite(LEFT_VALVE_PIN, HIGH);
+  else if (currentAngle > targetAngle) { // rotate right
+    digitalWrite(LEFT_VALVE_PIN_1, LOW);
+    digitalWrite(LEFT_VALVE_PIN_2, LOW);
+    
+    digitalWrite(RIGHT_VALVE_PIN_1, HIGH);
+    digitalWrite(RIGHT_VALVE_PIN_2, HIGH);
   }
 
-  else if (currentAngle > targetAngle) { // deflate
-    digitalWrite(RIGHT_VALVE_PIN, LOW);
-    digitalWrite(LEFT_VALVE_PIN, LOW);
+  else if (currentAngle < targetAngle) { // rotate left
+    digitalWrite(LEFT_VALVE_PIN_1, HIGH);
+    digitalWrite(LEFT_VALVE_PIN_2, HIGH);
+    
+    digitalWrite(RIGHT_VALVE_PIN_1, LOW);
+    digitalWrite(RIGHT_VALVE_PIN_2, LOW);
   }
 
   
   // ------------- Debugging -------------- //
-  
+  /*
   Serial.print(angle * (180 / PI));
   Serial.print("\t");
   Serial.print("target angle: "); 
   Serial.println(targetAngle * (180 / PI));
   Serial.print("\t");
+  */
 
+  Serial.print("left: "); Serial.print(analogRead(LEFT_PRESSURE_PIN));
+  Serial.print("\t");
+  Serial.print("right: "); Serial.println(analogRead(RIGHT_PRESSURE_PIN));
 
   // ------------- Wait till next check (can delete if you want but it might cause inconsistencies when messing with other parts of code) -------------- //
 

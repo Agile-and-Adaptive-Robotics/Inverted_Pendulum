@@ -1,12 +1,12 @@
-#define MISO 5
-#define MOSI 6
+#define MISO 4
+#define MOSI 5
 #define SCK 3
-#define SS 7
+#define SS 6
 
-#define RESET 8
+#define RESET 6
 
-#define VCC 10
-#define GND 12
+#define VCC 26
+#define GND 20
 
 unsigned int currentAddress = 0;
 
@@ -146,7 +146,7 @@ uint8_t transferByte(uint8_t b) {
   int toPrint = b;
   uint8_t receivedByte = 0;
   
-  Serial.print(">>>> ");
+  Serial.print("---> ");
   
   for (int i = 0; i < 8; i++) {
     bool currentBit = b & 128;
@@ -167,7 +167,7 @@ uint8_t transferByte(uint8_t b) {
 
   }
   Serial.print(": "); printHex(toPrint);
-  Serial.print("<<<< "); printHex(receivedByte);
+  Serial.print("<--- "); printHex(receivedByte);
 
   return receivedByte;
 }
@@ -288,10 +288,10 @@ void setup() {
   
   Serial.println("---- chip erase ----");
 
-  transferByte(chipErase[0]);
-  transferByte(chipErase[1]);
-  transferByte(chipErase[2]);
-  transferByte(chipErase[3]);
+  //transferByte(chipErase[0]);
+  //transferByte(chipErase[1]);
+  //transferByte(chipErase[2]);
+  //transferByte(chipErase[3]);
 
 
   delay(100); // wait for memory to erase (recommended by atmel is 9.0ms)
@@ -303,14 +303,14 @@ void setup() {
   unsigned int startAddress = currentAddress;
 
 
-  DDRB = 0x04;  // port b data register code
-  PORTB = 0x05; // port b data direction register code
+  const int DDRB_CODE = 0x04;  // port b data register code
+  const int PORTB_CODE = 0x05; // port b data direction register code
     
   unsigned int codeLength = 3;
   uint16_t code[3] = {
-    ldi (16, (1 << 6)),    // load 01000000 to register 16 (for turning on 6th bit of DDRB and PORTB)
-    out (DDRB, 16),        // write register 16 to DDRB
-    out (PORTB, 16)        // write register 16 to PORTB
+    ldi (16, (1 << 6)),    // load 01000000 to register 16 (for turning on 6th bit of DDRB_CODE and PORTB_CODE)
+    out (DDRB_CODE, 16),        // write register 16 to DDRB_CODE
+    out (PORTB_CODE, 16)        // write register 16 to PORTB_CODE
   };
 
   delay(20);
@@ -319,7 +319,7 @@ void setup() {
     uint8_t highByte = code[i] >> 8;
     uint8_t lowByte = code[i] & 0xFF;
 
-    loadWordToPageBuffer(highByte, lowByte);
+    //loadWordToPageBuffer(highByte, lowByte);
   }
 
   unsigned int endAddress = currentAddress - 1;
@@ -328,7 +328,7 @@ void setup() {
 
   Serial.println("---- write page data to flash ----");
   
-  writePageBufferToFlash(startAddress, endAddress);
+  //writePageBufferToFlash(startAddress, endAddress);
 
   delay(100);
 

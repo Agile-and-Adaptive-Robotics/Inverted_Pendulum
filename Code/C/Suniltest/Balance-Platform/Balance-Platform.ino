@@ -1,7 +1,7 @@
 // ------------------ // pin numbers
 
-#define MOTOR_PIN_1 22
-#define MOTOR_PIN_2 23
+#define MOTOR_PIN_1 2
+#define MOTOR_PIN_2 3
 
 #define ENCODER_PIN_1 19
 #define ENCODER_PIN_2 20
@@ -145,9 +145,6 @@ void loop() {
   if (mode == STILL) { // don't move
     //stopCounter = 0;
   
-    digitalWrite(9, LOW);
-    digitalWrite(7, LOW);
-    
     digitalWrite(MOTOR_PIN_1, LOW);
     digitalWrite(MOTOR_PIN_2, LOW);
   } else {
@@ -161,8 +158,6 @@ void loop() {
       digitalWrite(MOTOR_PIN_1, HIGH);
       digitalWrite(MOTOR_PIN_2, LOW);
 
-      digitalWrite(9, HIGH);
-      digitalWrite(7, LOW);
     } else { // moving backward
       
       Serial.print("moving backward to ");
@@ -173,8 +168,6 @@ void loop() {
       digitalWrite(MOTOR_PIN_1, LOW);
       digitalWrite(MOTOR_PIN_2, HIGH);
 
-      digitalWrite(9, LOW);
-      digitalWrite(7, HIGH);
     }
   }
 
