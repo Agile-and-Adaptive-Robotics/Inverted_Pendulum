@@ -1,0 +1,24 @@
+{
+    "Header": {
+        "Comment": "All values are metric (mm)",
+        "CreationDate": "2022-07-27T23:22:54Z",
+        "GenerationSoftware": {
+            "Application": "EAGLE",
+            "Vendor": "Autodesk",
+            "Version": "9.7.0"
+        },
+        "Part": "Single"
+    },
+    "Overall": {
+        "BoardThickness": 1.57,
+        "LayerNumber": 2,
+        "Name": {
+            "ProjectId": "IP_v3 v3"
+        },
+        "Owner": "amiri horn <amiriphorn@gmail.com>",
+        "Size": {
+            "X": 59.67,
+            "Y": 91.11
+        }
+    }
+}
