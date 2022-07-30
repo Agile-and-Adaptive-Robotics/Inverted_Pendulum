@@ -1,7 +1,7 @@
 {
     "Header": {
         "Comment": "All values are metric (mm)",
-        "CreationDate": "2022-07-27T21:34:08Z",
+        "CreationDate": "2022-07-29T17:43:42Z",
         "GenerationSoftware": {
             "Application": "EAGLE",
             "Vendor": "Autodesk",
@@ -13,7 +13,7 @@
         "BoardThickness": 1.57,
         "LayerNumber": 2,
         "Name": {
-            "ProjectId": "IP_v3 v3"
+            "ProjectId": "IP_v3 v4"
         },
         "Owner": "amiri horn <amiriphorn@gmail.com>",
         "Size": {
