@@ -78,7 +78,7 @@ void loop() {
   static float angle = PI / 2; // angle assumes that it is straight up on start
   float angleVelocity = 0;
 
-  float correction = 0.0476;
+  float correction = 0.0486;
 
 
   sensors_event_t event;
@@ -92,7 +92,10 @@ void loop() {
 
   static float lastTime = 0;
   float currentTime = millis();
-  angle -= angleVelocity * ((currentTime - lastTime) / 1000);
+  float angleChange = angleVelocity * ((currentTime - lastTime) / 1000);
+  int roundedness = 5000;
+  int roundedAngleChange = (int)((angleChange * roundedness) + .5);
+  angle -= (float)(roundedAngleChange) / roundedness;
   lastTime = currentTime;
 
   // ------------- Valve control -------------- //
@@ -128,17 +131,17 @@ void loop() {
 
   
   // ------------- Debugging -------------- //
-  /*
+  
   Serial.print(angle * (180 / PI));
   Serial.print("\t");
   Serial.print("target angle: "); 
-  Serial.println(targetAngle * (180 / PI));
-  Serial.print("\t");
-  */
+  Serial.print(targetAngle * (180 / PI));
+  Serial.println("\t");
+  
 
-  Serial.print("left: "); Serial.print(analogRead(LEFT_PRESSURE_PIN));
-  Serial.print("\t");
-  Serial.print("right: "); Serial.println(analogRead(RIGHT_PRESSURE_PIN));
+  //Serial.print("left: "); Serial.print(analogRead(LEFT_PRESSURE_PIN));
+  //Serial.print("\t");
+  //Serial.print("right: "); Serial.println(analogRead(RIGHT_PRESSURE_PIN));
 
   // ------------- Wait till next check (can delete if you want but it might cause inconsistencies when messing with other parts of code) -------------- //
 

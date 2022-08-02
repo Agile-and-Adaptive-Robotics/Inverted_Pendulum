@@ -6,8 +6,8 @@
 // on counter keeps going up until it reaches open total
 
 
-int minimumOffTotal = 3;
-int minimumOnTotal = 3;
+int minimumOffTotal = 1;
+int minimumOnTotal = 1;
 
 
 
