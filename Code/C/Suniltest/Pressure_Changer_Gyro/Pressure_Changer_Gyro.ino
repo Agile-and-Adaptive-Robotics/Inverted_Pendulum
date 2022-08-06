@@ -9,14 +9,14 @@ Adafruit_L3GD20_Unified gyro = Adafruit_L3GD20_Unified(20);
 
 // ------------------ // Constants
 
-#define RIGHT_BUTTON_PIN 7 // ** change these **
-#define LEFT_BUTTON_PIN 6
+#define RIGHT_BUTTON_PIN 8 // ** change these **
+#define LEFT_BUTTON_PIN 9
 
-#define LEFT_VALVE_PIN_1 10
-#define LEFT_VALVE_PIN_2 9
+#define LEFT_VALVE_PIN_1 2
+#define LEFT_VALVE_PIN_2 3
 
-#define RIGHT_VALVE_PIN_1 12
-#define RIGHT_VALVE_PIN_2 11
+#define RIGHT_VALVE_PIN_1 4
+#define RIGHT_VALVE_PIN_2 5
 
 #define LEFT_PRESSURE_PIN 1  // analog
 #define RIGHT_PRESSURE_PIN 0 // analog
@@ -104,7 +104,7 @@ void loop() {
   float currentAngle = angle;
   
 
-  float allowedRange = 0.015; // acceptable range/2 for the pressure
+  float allowedRange = 0.03; // acceptable range/2 for the pressure
   if (targetAngle - allowedRange < currentAngle && currentAngle < targetAngle + allowedRange) { // stop
     digitalWrite(LEFT_VALVE_PIN_1, HIGH);
     digitalWrite(LEFT_VALVE_PIN_2, LOW);
@@ -113,7 +113,7 @@ void loop() {
     digitalWrite(RIGHT_VALVE_PIN_2, LOW);
   }
 
-  else if (currentAngle > targetAngle) { // rotate right
+  else if (currentAngle < targetAngle) { // rotate right
     digitalWrite(LEFT_VALVE_PIN_1, LOW);
     digitalWrite(LEFT_VALVE_PIN_2, LOW);
     
@@ -121,7 +121,7 @@ void loop() {
     digitalWrite(RIGHT_VALVE_PIN_2, HIGH);
   }
 
-  else if (currentAngle < targetAngle) { // rotate left
+  else if (currentAngle > targetAngle) { // rotate left
     digitalWrite(LEFT_VALVE_PIN_1, HIGH);
     digitalWrite(LEFT_VALVE_PIN_2, HIGH);
     
