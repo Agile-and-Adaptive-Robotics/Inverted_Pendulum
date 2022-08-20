@@ -203,18 +203,24 @@ void loop() {
   static float desiredAngle = 0;
 
   if (digitalRead(8)) {
-    desiredAngle += moveSpeed;
+    //desiredAngle += moveSpeed;
+    posterior.changePWM(.001);
+    anterior.changePWM(-.001);
+    peroneus.changePWM(-.001);
   }
   if (digitalRead(9)) {
-    desiredAngle -= moveSpeed;
+    //desiredAngle -= moveSpeed;
+    posterior.changePWM(-.001);
+    anterior.changePWM(.001);
+    peroneus.changePWM(.001);
   }
 
   float halfSin = sin(desiredAngle) / 8;
   float halfCos = cos(desiredAngle) / 8;
   
-  posterior.setPWM(.4 + halfSin);
-  anterior.setPWM(.4 + halfCos - halfSin);
-  peroneus.setPWM(.7 - halfCos - halfSin);
+  //posterior.setPWM(.4 + halfSin);
+  //anterior.setPWM(.4 + halfCos - halfSin);
+  //peroneus.setPWM(.7 - halfCos - halfSin);
   
   posterior.setValve();
   anterior.setValve();
