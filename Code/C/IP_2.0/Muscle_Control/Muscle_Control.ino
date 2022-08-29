@@ -130,7 +130,7 @@ void setup() {
   while(!Serial);
   Serial.println("beginning");
 
-  posterior.setPWM(.25);
+  posterior.setPWM(.5);
   anterior.setPWM(.5);
   peroneus.setPWM(.5);
 
