@@ -40,9 +40,12 @@ class Muscle {
     
     int pin;
 
-    float xWeight;
-    float yWeight;
-    float zWeight;
+    float xStrength;
+    float zStrength;
+
+    float xIdle;
+    float zIdle;
+
     
     float PWM = .5;
 
@@ -104,24 +107,39 @@ class Muscle {
       digitalWrite(pin, on);
     }
 
+    float calculatePWM(float angleX, float angleZ) {
+      float xPWM = (xStrength * angleX) + xIdle;
+      float zPWM = (zStrength * angleZ) + zIdle;
 
-    Muscle(int p, float x, float y, float z) {
+      float combinedPWM = (xPWM + zPWM) / 2;
+      if (combinedPWM > 1) combinedPWM = 1;
+      if (combinedPWM < 0) combinedPWM = 0;
+      
+      return combinedPWM;
+    }
+
+
+    Muscle(int p, float xS,float zS, float xI, float zI) {
       pin = p;
       pinMode(pin, OUTPUT);
       digitalWrite(pin, LOW);
 
-      xWeight = x;
-      yWeight = y;
-      zWeight = z;
+      xStrength = xS;
+      zStrength = zS;
+
+      xIdle = xI;
+      zIdle = zI;
     }
     
 };
-//                  xWeight
-//                         yWeight
-//                                zWeight
-Muscle posterior(2,  1.00,  0.00,  0.00); // posterior is connected to pin 5
-Muscle anterior (5,  0.00,  0.00, -0.00); // anterior  is connected to pin 6
-Muscle peroneus (4,  0.00,  0.00,  0.00); // peroneus  is connected to pin 7
+//              pin
+//                 xStrength
+//                        zStrength
+//                               xIdle
+//                                   zIdle
+Muscle posterior(2,  2.00,  0.00, .5, .5); // posterior is connected to pin 5
+Muscle anterior (5, -2.00, -2.00, .6, .6); // anterior  is connected to pin 6
+Muscle peroneus (4, -2.00,  2.00, .5, .5); // peroneus  is connected to pin 7
 
 
 
@@ -198,29 +216,23 @@ void loop() {
   
   // ------ set BPAs to desired PWMs ------ //
 
-  float moveSpeed = .02;
+  float moveSpeed = .001;
 
   static float desiredAngle = 0;
 
   if (digitalRead(8)) {
-    //desiredAngle += moveSpeed;
-    posterior.changePWM(.001);
-    anterior.changePWM(-.001);
-    peroneus.changePWM(-.001);
+    desiredAngle += moveSpeed;
   }
   if (digitalRead(9)) {
-    //desiredAngle -= moveSpeed;
-    posterior.changePWM(-.001);
-    anterior.changePWM(.001);
-    peroneus.changePWM(.001);
+    desiredAngle -= moveSpeed;
   }
 
-  float halfSin = sin(desiredAngle) / 8;
-  float halfCos = cos(desiredAngle) / 8;
+  if (desiredAngle < -1) desiredAngle = -1;
+  if (desiredAngle >  1) desiredAngle =  1;
   
-  //posterior.setPWM(.4 + halfSin);
-  //anterior.setPWM(.4 + halfCos - halfSin);
-  //peroneus.setPWM(.7 - halfCos - halfSin);
+  posterior.setPWM(posterior.calculatePWM(angleX, angleZ));
+  anterior. setPWM(anterior .calculatePWM(angleX, angleZ));
+  peroneus. setPWM(peroneus .calculatePWM(angleX, angleZ));
   
   posterior.setValve();
   anterior.setValve();
