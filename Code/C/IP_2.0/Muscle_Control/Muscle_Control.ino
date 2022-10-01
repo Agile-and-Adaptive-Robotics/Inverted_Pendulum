@@ -4,32 +4,13 @@
 
 Adafruit_FXOS8700 accelmag = Adafruit_FXOS8700(0x8700A, 0x8700B);
 
-class AccelerationData {
-  public:
-  float x;
-  float y;
-  float z;
-
-  void calculateAcceleration() {
-    
-    sensors_event_t aevent, mevent;
-    accelmag.getEvent(&aevent, &mevent);
-
-    x = aevent.acceleration.x;
-    y = aevent.acceleration.y;
-    z = aevent.acceleration.z;
-  }
-  
-};
-
-AccelerationData acceleration;
 
 int levels = 12;
 int delayTime = 8;
 
 // ------------ Muscle Class ------------ //
 /*
- * setPWM(int value)   : sets the target length with float from 0 to 1
+ * setPWM(int value)   : sets the target length with a float from 0 to 1
  * changePWM(int value): changes the target length
  * setValve()          : should be called every loop to control the valve manifold
  * Muscle(int p)       : constructor, sets pin number and initializes pin 
@@ -40,11 +21,10 @@ class Muscle {
     
     int pin;
 
-    float xStrength;
-    float zStrength;
+    float minimumPWM; // PWM at which angle is at minimum value (-90 degrees)
+    float maximumPWM; // PWM at which angle is at maximum value ( 90 degrees)
 
-    float xIdle;
-    float zIdle;
+    float idle;
 
     
     float PWM = .5;
@@ -54,6 +34,8 @@ class Muscle {
 
     bool on = true;
     int counter = 0;
+
+    float jointPWMs[4];
 
 
     
@@ -107,6 +89,7 @@ class Muscle {
       digitalWrite(pin, on);
     }
 
+/*
     float calculatePWM(float angleX, float angleZ) {
       float xPWM = (xStrength * angleX) + xIdle;
       float zPWM = (zStrength * angleZ) + zIdle;
@@ -117,29 +100,61 @@ class Muscle {
       
       return combinedPWM;
     }
+*/
+    
+    float calculatePWM() {
+      float totalPWM = 0;
+      for (int i = 0; i < 4; i++) {
+        totalPWM += constrain(jointPWMs[i], 0, 1);
+      }
+
+      return map(totalPWM / 4, 0, 1, minimumPWM, maximumPWM);
+    }
 
 
-    Muscle(int p, float xS,float zS, float xI, float zI) {
+    Muscle(int p, float minimum,float maximum, float i) {
       pin = p;
       pinMode(pin, OUTPUT);
       digitalWrite(pin, LOW);
 
-      xStrength = xS;
-      zStrength = zS;
+      minimumPWM = minimum;
+      maximumPWM = maximum;
 
-      xIdle = xI;
-      zIdle = zI;
+      idle = i;
     }
     
 };
+
+
+
+
+
+
+
+
+// 
+
 //              pin
-//                 xStrength
-//                        zStrength
-//                               xIdle
-//                                   zIdle
-Muscle posterior(2,  2.00,  0.00, .5, .5); // posterior is connected to pin 5
-Muscle anterior (5, -2.00, -2.00, .6, .6); // anterior  is connected to pin 6
-Muscle peroneus (4, -2.00,  2.00, .5, .5); // peroneus  is connected to pin 7
+//                  min
+//                       max
+//                            idle
+Muscle posterior(2, 0.0, 1.0, 0.5); // posterior is connected to pin 2
+Muscle anterior (5, 0.0, 1.0, 0.5); // anterior  is connected to pin 5
+Muscle peroneus (4, 0.0, 1.0, 0.5); // peroneus  is connected to pin 4
+
+Muscle dilongus (6, 0.0, 1.0, 0.5); // dilongus  is connected to pin 6
+Muscle halongus (7, 0.0, 1.0, 0.5); // halongus  is connected to pin 7
+Muscle diflexor (8, 0.0, 1.0, 0.5); // diflexor  is connected to pin 8
+Muscle haflexor (9, 0.0, 1.0, 0.5); // haflexor  is connected to pin 9
+
+
+float[2] calculatePWMForAngle(float initialAngle, float targetAngle) {
+
+  
+
+  return {0, 0};
+}
+
 
 
 
@@ -166,98 +181,4 @@ void printDebug(String info, float statement) {
   Serial.print(":");
   Serial.print(statement);
   Serial.print("\t");
-}
-
-void loop() {
-
-  
-
-  
-  // ------ decide what to set BPAs to ------ //
-/*
-  sensors_event_t event;
-  gyro.getEvent(&event);
-
-  float angleXVelocity = event.gyro.x - .01;
-  float angleYVelocity = event.gyro.y;
-  float angleZVelocity = event.gyro.z - .01;
-
-  static int lastAngleTime = 0;
-  float deltaAngleTime = millis() - lastAngleTime;
-  lastAngleTime = millis();
-
-  static float angleX = 0;
-  static float angleY = 0;
-  static float angleZ = 0;
-  
-  angleX += angleXVelocity * (deltaAngleTime / 1000000);
-  angleY += angleYVelocity * (deltaAngleTime / 1000000);
-  angleZ += angleZVelocity * (deltaAngleTime / 1000000);
-
-
-  float targetAngleX = PI / 2;
-  float targetAngleY = 0;
-  float targetAngleZ = PI / 2;
-
-  float deltaAngleX = targetAngleX - angleX;
-  float deltaAngleY = targetAngleY - angleY;
-  float deltaAngleZ = targetAngleZ - angleZ;
-  */
-
-  acceleration.calculateAcceleration();
-
-  // ---- calculate angle ----//
-
-  float totalAcceleration = abs(acceleration.x) + abs(acceleration.y) + abs(acceleration.z);
-
-  float angleX = acceleration.x / totalAcceleration;
-  float angleZ = acceleration.y / totalAcceleration;
-    
-  
-  // ------ set BPAs to desired PWMs ------ //
-
-  float moveSpeed = .001;
-
-  static float desiredAngle = 0;
-
-  if (digitalRead(8)) {
-    desiredAngle += moveSpeed;
-  }
-  if (digitalRead(9)) {
-    desiredAngle -= moveSpeed;
-  }
-
-  if (desiredAngle < -1) desiredAngle = -1;
-  if (desiredAngle >  1) desiredAngle =  1;
-  
-  posterior.setPWM(posterior.calculatePWM(angleX, angleZ));
-  anterior. setPWM(anterior .calculatePWM(angleX, angleZ));
-  peroneus. setPWM(peroneus .calculatePWM(angleX, angleZ));
-  
-  posterior.setValve();
-  anterior.setValve();
-  peroneus.setValve();
-
-  
-
-
-  // ------ debug ------ //
-
-  //printDebug("posterior", posterior.on + 3);
-  //printDebug("anterior", anterior.on + 5);
-  //printDebug("peroneus", peroneus.on + 7);
-  //printDebug("x", angleX * PI);
-  //printDebug("z", angleZ * PI);
-  //Serial.println();
-  
-
-  
-
-  // ------ delay till next ------ //
-
-  static int lastTime = 0;
-  int currentTime = millis();
-  int deltaTime = currentTime - lastTime;
-  if (delayTime - deltaTime > 0) delay(delayTime - deltaTime);
-  lastTime = millis();
 }
