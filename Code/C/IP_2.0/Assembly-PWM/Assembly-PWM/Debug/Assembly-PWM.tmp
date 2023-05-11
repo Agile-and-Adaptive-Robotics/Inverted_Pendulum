@@ -1,0 +1,31 @@
+<ASSEMBLER_INFO>
+ <VERSION>2.2.8</VERSION>
+ <DEVICE>"ATmega88A"</DEVICE>
+ <WORKING_DIR>R:\GitHub\Inverted_Pendulum\Code\C\IP_2.0\Assembly-PWM\Assembly-PWM\Debug</WORKING_DIR>
+ <INCLUDE_PATH>
+  <DIR>C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.7.374\avrasm\inc</DIR>
+  <DIR>C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avrassembler\Include</DIR>
+  <DIR></DIR>
+ </INCLUDE_PATH>
+ <SOURCE_FILE>R:\GitHub\Inverted_Pendulum\Code\C\IP_2.0\Assembly-PWM\Assembly-PWM\main.asm</SOURCE_FILE>
+ <INCLUDED_FILES>
+  <FILE>C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.7.374\avrasm\inc\m88Adef.inc</FILE>
+ </INCLUDED_FILES>
+ <OBJECT_FILES>
+  <FILE>R:\GitHub\Inverted_Pendulum\Code\C\IP_2.0\Assembly-PWM\Assembly-PWM\Debug\Assembly-PWM.obj</FILE>
+ </OBJECT_FILES>
+ <HEX_FILES>
+  <FILE>Assembly-PWM.hex</FILE>
+ </HEX_FILES>
+ <OUTPUT_FILES>
+  <FILE>Assembly-PWM.map</FILE>
+  <FILE>Assembly-PWM.lss</FILE>
+ </OUTPUT_FILES>
+ <LABELS>
+  <start><FILE>R:\GitHub\Inverted_Pendulum\Code\C\IP_2.0\Assembly-PWM\Assembly-PWM\main.asm</FILE><LINE>33</LINE></start>
+  <else><FILE>R:\GitHub\Inverted_Pendulum\Code\C\IP_2.0\Assembly-PWM\Assembly-PWM\main.asm</FILE><LINE>59</LINE></else>
+  <finish><FILE>R:\GitHub\Inverted_Pendulum\Code\C\IP_2.0\Assembly-PWM\Assembly-PWM\main.asm</FILE><LINE>68</LINE></finish>
+  <delayOuter><FILE>R:\GitHub\Inverted_Pendulum\Code\C\IP_2.0\Assembly-PWM\Assembly-PWM\main.asm</FILE><LINE>75</LINE></delayOuter>
+  <delayInner><FILE>R:\GitHub\Inverted_Pendulum\Code\C\IP_2.0\Assembly-PWM\Assembly-PWM\main.asm</FILE><LINE>80</LINE></delayInner>
+ </LABELS>
+</ASSEMBLER_INFO>
