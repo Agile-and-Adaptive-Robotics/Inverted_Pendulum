@@ -4,6 +4,8 @@
  *  
  * digital pin 22 = transistor array P1 = PA0/AD0 = pin78
  * digital pin 23 = transistor array P2 = PA1/AD1 = pin77
+ * 
+ * ADC = Analog to Digital Converter
  */
 
 // libraries___________________________________________________________________________________
@@ -19,12 +21,14 @@
 Adafruit_FXAS21002C gyro = Adafruit_FXAS21002C(0x0021002C);
 RotaryEncoder encoder(2, 3);
 
-// constants___________________________________________________________________________________
+// global constants____________________________________________________________________________
 const int thresholdPressure = 1; // arbitrary value
+const float freqPWM = 1; // arbitrary value
 
-// variables___________________________________________________________________________________
+// global variables____________________________________________________________________________
 float pressureSensor1 = 0;
 float pressureSensor2 = 0;
+bool isHigh = false;
 
 // functions___________________________________________________________________________________
 
@@ -53,26 +57,18 @@ void displaySensorDetails(void) {
 }
 
 void setUpTimerInterrupt(void){ // should work but register values unchecked
-  cli();
+  cli(); // disable interrupts during timed seq
 
-  // set timer4 interrupt at 1Hz
-  TCCR4A = 0; //register set to 0
-  TCCR4B = 0; //register set to 0
-  TCNT4 = 0; //init counter to 0
+  // initially set to zero
+  TCCR1A = 0;
+  TCCR1B = 0;
 
-  // set compare match register for 1Hz increments
-  OCR4A = 15624/1;
+  // set Timer/Counter 1 Register B to no prescaler --> clk/1
+  TCCR1B |= (1 << CS10); // CS10 is CSn0
 
-  // turn on CTC mode
-  TCCR4B |= (1 << WGM12);
+  // increase sampling frequency for ADC
 
-  // Set CS12 and CS10 bits for 1024 prescaler
-  TCCR4B |= (1 << CS12) | (1 << CS10);
-
-  // enable timer compare interrupt
-  TIMSK4 |= (1 << OCIE4A);
-
-  sei();
+  sei(); // set global interrupt enable
 }
 
 void setPinModes(void){
@@ -86,10 +82,12 @@ void setPinModes(void){
 void bangHigh(int pin){
   // use bitwise operators here to not alter set pin modes
   PORTA |= (1 << (pin - 22));
+  bool isHigh = true;
 }
 
 void bangLow(int pin){
   PORTA &= ~(1 << (pin - 22));
+  bool isHigh = false;
 }
 
 void bangBang(float desiredPressure, float actualPressure, int pin){
@@ -102,10 +100,10 @@ void bangBang(float desiredPressure, float actualPressure, int pin){
 
   // open or close valve.
   if (actualPressure > upperPressure){
-    bangLow(pin);
+    bangLow(pin); // close
   }
   else if (actualPressure < lowerPressure){
-    bangHigh(pin);
+    bangHigh(pin); // open
   }
 }
 
@@ -118,6 +116,29 @@ void manualPWM(float dutyCycle, int pin){ // if dutyCycle is 50% then input is 0
   delay(timeHigh);
   bangLow(pin);
   delay(timeLow);
+}
+
+void millisBasedPWM(float dutyCycle, float freqPWM, int pin, float currentMillis, float oldMillis){  // dutyCycle in ms
+  // freq and period are reciprocals
+  float interval = 1 / freqPWM;
+  float activeDuration = dutyCycle * interval;
+  
+  if (isHigh == false){
+    if (currentMillis - oldMillis >= interval){
+      bangHigh(pin);
+      oldMillis += interval;
+    }
+  }
+  else {
+    if (currentMillis - oldMillis >= activeDuration){
+      bangLow(pin);
+      oldMillis += activeDuration;
+    }
+  }
+}
+
+void generatePWM(){
+  
 }
 
 //_____________________________________________________________________________________________
@@ -151,6 +172,5 @@ ISR(TIMER4_COMPA_vect){
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
-
+  float currentMillis = millis(); // latest value of millis()
 }
