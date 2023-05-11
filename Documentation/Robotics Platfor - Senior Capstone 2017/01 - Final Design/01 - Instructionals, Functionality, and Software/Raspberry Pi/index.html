@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Brute Launch Pad</title>
+    <meta charset="utf-8">
+	<meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+    <link rel="stylesheet" href="http://code.jquery.com/mobile/1.3.1/jquery.mobile-1.3.1.min.css" />
+    <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+    <script src="http://code.jquery.com/mobile/1.3.1/jquery.mobile-1.3.1.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
+	<script src = "/socket.io/socket.io.js" ></script>
+    <script>
+	    // Establishing connection with server
+	    var socket = io.connect();
+
+		var inputs = {amp1:0,amp2:0,freq1:0,freq2:0,duration:0,type:NaN};
+		var outputs;  //storage string for .txt output file
+		var outputData = {
+			'Motor 1 Command Pos':[],
+			'Motor 1 Actual Pos':[],
+			'Motor 2 Command Pos':[],
+			'Motor 2 Actual Pos':[],
+			'Time':[]	
+		};
+
+		function update(id,value){
+			inputs[id]=10*parseFloat(value);
+		}
+
+		function update2(id,value){
+			inputs[id]=parseInt(value);
+		}
+
+		function resetGraph() {
+			outputData = {
+				'Motor 1 Command Pos':[],
+				'Motor 1 Actual Pos':[],
+				'Motor 2 Command Pos':[],
+				'Motor 2 Actual Pos':[],
+				'Time':[]
+			};
+			myChart.data.datasets[0].data = outputData['Motor 1 Command Pos'];
+			myChart.data.datasets[1].data = outputData['Motor 1 Actual Pos'];
+			myChart.data.datasets[2].data = outputData['Motor 2 Command Pos'];
+			myChart.data.datasets[3].data = outputData['Motor 2 Actual Pos'];
+			myChart.data.labels = outputData['Time'];
+			myChart.update();
+		}
+
+		function freqButtonPress() {
+			inputs['type'] = 0;
+			resetGraph();
+			socket.emit('sendInput',inputs);
+		}
+
+		function stepButtonPress() {
+			inputs['type'] = 1;
+			resetGraph();
+			socket.emit('sendInput',inputs);
+		}
+		
+		socket.on('outputdata', function(data){
+			//outputs[data[0]].push(data[1]);
+			outputs = data;
+		});
+		
+		socket.on('updateBlob', function(){
+			var data = new Blob([outputs]);
+			var a = document.getElementById('a');
+			a.href = URL.createObjectURL(data);
+		});
+		
+		// function updateChart(chart){
+		// 	chart.data.labels.push(outputData['Time'].slice(-1).pop());
+		// 	myChart.data.datasets[0].data.push(outputData['Motor 1 Command Pos'].slice(-1).pop());
+		// 	myChart.data.datasets[1].data.push(outputData['Motor 1 Actual Pos'].slice(-1).pop());
+		// 	myChart.data.datasets[2].data.push(outputData['Motor 2 Command Pos'].slice(-1).pop());
+		// 	myChart.data.datasets[3].data.push(outputData['Motor 2 Actual Pos'].slice(-1).pop());
+		// 	chart.update();
+		// };
+
+		socket.on('updateOutputData', function(data){
+			//outputData = data;
+			var labels = {
+				'Motor 1 Command Pos':0,
+				'Motor 1 Actual Pos':1,
+				'Motor 2 Command Pos':2,
+				'Motor 2 Actual Pos':3
+			};
+			myChart.data.labels = data['time'];
+			myChart.data.datasets[labels[data['label']]].data.push(data['value'])
+			myChart.update()
+			//updateChart(myChart);
+		});
+
+		function emButtPress(){
+			socket.emit('emButtPress');
+			resetGraph();
+			inputs = {amp1:0,amp2:0,freq1:0,freq2:0,duration:0,type:NaN};
+			document.getElementById("amp1").value = 0;
+			document.getElementById("freq1").value = 0;
+			document.getElementById("amp2").value = 0;
+			document.getElementById("freq2").value = 0;
+			document.getElementById("duration").value = 0;
+		};
+
+	</script>
+</head>
+<body>
+	<div data-theme="a" data-role="header">
+		<h2>Brute Launch Pad</h2>
+	</div>
+	
+	<fieldset class="ui-grid-a">
+	<div class = "ui-block-a" class="ui-field-contain">
+		<label for="submit-1">Emergency Stop / Reset</label>
+		<button type="submit" id="emStopButt" class="ui-btn ui-btn-inline" data-inline="true"  onclick="emButtPress();">Reset/Stop</button>
+        </div>
+	</fieldset>
+	
+	
+	<fieldset class="ui-grid-a">
+		<div class="ui-block-a">
+			<h2 id="output">Frequency Input</h2>
+
+			<div data-role="ui-field-contain">
+				<label for="amp1">Amplitude 1 (deg)</label>
+				<input id="amp1" type="range" name="slider" value="0" min="0" max="7.5" step="0.5"  onChange = "update(id,value);">
+			</div>
+	        <div data-role="ui-field-contain">
+	                <label for="freq1">Freqeuncy 1 (Hz)</label>
+	                <input id="freq1" type="range" name="slider" value="0" min="0" max="1.1"  step="0.1" onChange = "update(id,value);">
+	        </div>
+		        
+			<div data-role="ui-field-contain">
+                <label for="amp2">Amplitude 2 (deg)</label>
+                <input id="amp2" type="range" name="slider" value="0" min="0" max="7.5" step="0.5"  onChange = "update(id,value);">
+	        </div>
+	        <div data-role="ui-field-contain">
+                <label for="freq2">Freqeuncy 2 (Hz)</label>
+                <input id="freq2" type="range" name="slider" value="0" min="0" max="1.1"  step="0.1" onChange = "update(id,value);">
+	        </div>
+
+			<div data-role="ui-field-contain">
+				<label for="duration">Duration(Num Periods)</label>
+				<input id=duration type=range name="slider" value="0" min="0" max="10" onChange = "update2(id,value);">
+			</div>	
+			
+			<div class="ui-field-contain">
+		    		<label for="submit">Send to Xmega:</label>
+		    		<button type="submit" id="sendBut" class="ui-shadow ui-btn ui-corner-all" onclick="freqButtonPress();">Submit</button>
+			</div>
+		</div>
+		
+
+		
+		<div class="ui-block-b">
+			<h2 id="output">Step Input</h2>
+
+			<div data-role="ui-field-contain">
+				<label for="amp1">Amplitude 1 (deg)</label>
+				<input id="amp1" type="range" name="slider" value="0" min="0" max="7.5" step="0.5"  onChange = "update(id,value);">
+			</div>
+		        
+			<div data-role="ui-field-contain">
+		                <label for="amp2">Amplitude 2 (deg)</label>
+		                <input id="amp2" type="range" name="slider" value="0" min="0" max="7.5" step="0.5"  onChange = "update(id,value);">
+			</div>
+			
+			<div class="ui-field-contain">
+		    		<label for="submit-1">Send to Xmega:</label>
+		    		<button type="submit-1" id="sendBut" class="ui-shadow ui-btn ui-corner-all" onclick="stepButtonPress();">Submit</button>
+			</div>
+		</div>
+	</fieldset>
+
+
+	<a id='a' download='download.txt' type='text/csv'>Download Txt</a>
+
+	<div>
+	<canvas id="myChart"></canvas>
+	<script>
+		var ctx = document.getElementById('myChart').getContext('2d');
+		var myChart = new Chart(ctx, {type: 'line',
+			data: {labels: outputData['Time'],
+			datasets: [{
+				label: 'Motor 1 Command',
+				data: outputData['Motor 1 Command Pos'],
+      			borderColor: "rgba(214,50,50,0.4)",
+      			fill: false
+    		}, {
+      			label: 'Motor 1 Actual',
+      			data: outputData['Motor 1 Actual Pos'],
+      			borderColor: "rgba(246, 250, 10,0.4)",
+      			fill: false
+    		}, {
+				label: 'Motor 2 Command',
+				data: outputData['Motor 2 Command Pos'],
+      			borderColor: "rgba(20,23,219,0.4)",
+      			fill: false
+    		},
+    		{
+				label: 'Motor 2 Actual',
+				data: outputData['Motor 2 Actual Pos'],
+      			borderColor: "rgba(250, 10, 126,0.4)",
+      			fill: false
+    		}
+    		]},
+    		    options: {
+    		    	layout: {
+    		    		padding: {
+    		    			left: 50,
+    		    			right: 50,
+    		    			top: 50,
+    		    			bottom: 50
+    		    		}
+    		    	}
+				}
+		})
+        </script>
+	</div>
+</body>
+</html>
