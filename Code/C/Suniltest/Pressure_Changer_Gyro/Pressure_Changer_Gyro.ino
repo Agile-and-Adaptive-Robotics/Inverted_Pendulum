@@ -78,7 +78,7 @@ void loop() {
   static float angle = PI / 2; // angle assumes that it is straight up on start
   float angleVelocity = 0;
 
-  float correction = 0.0486;
+  float correction = 0.0495;
 
 
   sensors_event_t event;
@@ -113,7 +113,7 @@ void loop() {
     digitalWrite(RIGHT_VALVE_PIN_2, LOW);
   }
 
-  else if (currentAngle < targetAngle) { // rotate right
+  else if (currentAngle > targetAngle) { // rotate right
     digitalWrite(LEFT_VALVE_PIN_1, LOW);
     digitalWrite(LEFT_VALVE_PIN_2, LOW);
     
@@ -121,7 +121,7 @@ void loop() {
     digitalWrite(RIGHT_VALVE_PIN_2, HIGH);
   }
 
-  else if (currentAngle > targetAngle) { // rotate left
+  else if (currentAngle < targetAngle) { // rotate left
     digitalWrite(LEFT_VALVE_PIN_1, HIGH);
     digitalWrite(LEFT_VALVE_PIN_2, HIGH);
     
