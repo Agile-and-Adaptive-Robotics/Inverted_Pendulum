@@ -5,6 +5,9 @@ BP_01_01_000 = Frame Design
 BP_01_02_000 = Base Mechanic Design
 BP_01_03_000 = Top Mechanic Design 
 ----------------------
+Whole Design: 
+BP_01_00_000
+----------------------
 Frame:
 BP_01_01_000
 
