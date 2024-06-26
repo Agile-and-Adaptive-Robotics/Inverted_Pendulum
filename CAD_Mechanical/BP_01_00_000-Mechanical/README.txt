@@ -1,20 +1,37 @@
+KEY:
 BP = Balance Platform
-
-Base:
+BP_01_00_000 = Mechanical Design
+BP_01_01_000 = Frame Design
+BP_01_02_000 = Base Mechanic Design
+BP_01_03_000 = Top Mechanic Design 
+----------------------
+Frame:
 BP_01_01_000
 
-Motor Connector:
+T Slot 1ft:
 BP_01_01_001
 
-Rack:
+T Slot 2ft:
 BP_01_01_002
 
-
-Platform:
+T Slot Corner Brackett:
+BP_01_01_003
+----------------------
+Base:
 BP_01_02_000
 
-Pinion:
+Motor:
 BP_01_02_001
 
-Pinion Connector:
+Motor Connector:
 BP_01_02_002
+
+Lead Screw:
+BP_01_02_003
+
+Lead Screw Nut:
+BP_01_02_004
+
+Base Platform:
+BP_01_02_005
+----------------------
