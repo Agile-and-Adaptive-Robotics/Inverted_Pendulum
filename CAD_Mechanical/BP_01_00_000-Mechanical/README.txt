@@ -37,4 +37,13 @@ BP_01_02_004
 
 Base Platform:
 BP_01_02_005
+
+Nut connector to plate:
+BP_01_02_006
+
+Bottom Plate:
+BP_01_02_007
+
+T Slot Linear Bearing:
+BP_01_02_008
 ----------------------
