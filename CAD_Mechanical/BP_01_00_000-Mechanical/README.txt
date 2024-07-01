@@ -19,6 +19,12 @@ BP_01_01_002
 
 T Slot Corner Brackett:
 BP_01_01_003
+
+90 degree brackett:
+BP_01_01_004
+
+Tree Brackett:
+BP_01_01_005
 ----------------------
 Base:
 BP_01_02_000
@@ -46,4 +52,16 @@ BP_01_02_007
 
 T Slot Linear Bearing:
 BP_01_02_008
+
+T Slot Holder:
+BP_01_02_009
+
+Mounted Roller Bearing:
+BP_01_02_010
+
+Roller Bearing Spacers:
+BP_01_02_011
+
+Gear Rack:
+BP_01_02_012
 ----------------------
