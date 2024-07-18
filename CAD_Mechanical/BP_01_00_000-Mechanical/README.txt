@@ -3,7 +3,8 @@ BP = Balance Platform
 BP_01_00_000 = Mechanical Design
 BP_01_01_000 = Frame Design
 BP_01_02_000 = Base Mechanic Design
-BP_01_03_000 = Top Mechanic Design 
+BP_01_03_000 = Sliding Mechanism
+BP_01_04_000 = Pinion Calibration Design
 ----------------------
 Whole Design: 
 BP_01_00_000
@@ -38,33 +39,43 @@ BP_01_02_002
 Lead Screw:
 BP_01_02_003
 
-Lead Screw Nut:
+Base Platform:
 BP_01_02_004
 
-Base Platform:
+T Slot Holder:
 BP_01_02_005
 
-Nut connector to plate:
+Mounted Roller Bearing:
 BP_01_02_006
 
-Bottom Plate:
+Roller Bearing Spacers:
 BP_01_02_007
 
-T Slot Linear Bearing:
+Gear Box:
 BP_01_02_008
+----------------------
+Sliding Mechanism:
+BP_01_03_000
 
-T Slot Holder:
-BP_01_02_009
+Lead Screw Nut:
+BP_01_02_001
 
-Mounted Roller Bearing:
-BP_01_02_010
+Nut connector to plate:
+BP_01_03_002
 
-Roller Bearing Spacers:
-BP_01_02_011
+Bottom Plate:
+BP_01_03_003
+
+T Slot Linear Bearing:
+BP_01_03_004
 
 Gear Rack:
-BP_01_02_012
+BP_01_03_005
 
-Gear Box:
-BP_01_02_013
 ----------------------
+Pinion Mechanism:
+BP_01_04_000
+
+Gear Pinion:
+BP_01_04_005
+
