@@ -21,9 +21,6 @@ BP_01_01_002
 T Slot Corner Brackett:
 BP_01_01_003
 
-90 degree brackett:
-BP_01_01_004
-
 Tree Brackett:
 BP_01_01_005
 ----------------------
@@ -73,12 +70,14 @@ Gear Rack:
 BP_01_03_005
 
 ----------------------
-Pinion Mechanism:
+Top Plate:
 BP_01_04_000
 
 Gear Pinion:
 BP_01_04_001
 
+Top Plate:
+BP_01_04_002
 ----------------------
 Rack Adjustment:
 BP_01_05_000
