@@ -23,6 +23,9 @@ BP_01_01_003
 
 Tree Brackett:
 BP_01_01_005
+
+Vertical T-Slots:
+BP_01_01_006
 ----------------------
 Base:
 BP_01_02_000
@@ -50,6 +53,15 @@ BP_01_02_007
 
 Gear Box:
 BP_01_02_008
+
+Screw Fastner:
+BP_01_02_009
+
+Screw Fastner:
+BP_01_02_010
+
+T-Slot:
+BP_01_02_011
 ----------------------
 Sliding Mechanism:
 BP_01_03_000
@@ -68,7 +80,6 @@ BP_01_03_004
 
 Gear Rack:
 BP_01_03_005
-
 ----------------------
 Top Plate:
 BP_01_04_000
@@ -78,6 +89,15 @@ BP_01_04_001
 
 Top Plate:
 BP_01_04_002
+
+Fastner:
+BP_01_04_003
+
+Angle Brackett:
+BP_01_04_004
+
+Nut:
+BP_01_04_005
 ----------------------
 Rack Adjustment:
 BP_01_05_000
