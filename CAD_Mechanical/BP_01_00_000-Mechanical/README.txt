@@ -5,6 +5,7 @@ BP_01_01_000 = Frame Design
 BP_01_02_000 = Base Mechanic Design
 BP_01_03_000 = Sliding Mechanism
 BP_01_04_000 = Pinion Calibration Design
+BP_01_05_000 = Slidimg Mechanism Support
 ----------------------
 Whole Design: 
 BP_01_00_000
@@ -12,20 +13,20 @@ BP_01_00_000
 Frame:
 BP_01_01_000
 
-T Slot 1ft:
+T Slot Width:
 BP_01_01_001
 
-T Slot 2ft:
+T Slot Length:
 BP_01_01_002
 
-T Slot Corner Brackett:
+T Slot Height:
 BP_01_01_003
 
-Tree Brackett:
-BP_01_01_005
+Corner Bracket:
+BP_01_01_004
 
-Vertical T-Slots:
-BP_01_01_006
+Flat Bracket:
+BP_01_01_005
 ----------------------
 Base:
 BP_01_02_000
@@ -42,26 +43,20 @@ BP_01_02_003
 Base Platform:
 BP_01_02_004
 
-T Slot Holder:
+Mounted Roller Bearing:
 BP_01_02_005
 
-Mounted Roller Bearing:
+Roller Bearing Spacers:
 BP_01_02_006
 
-Roller Bearing Spacers:
+Gear Box:
 BP_01_02_007
 
-Gear Box:
+Fastener Bolt:
 BP_01_02_008
 
-Screw Fastner:
+Fastener Nut:
 BP_01_02_009
-
-Screw Fastner:
-BP_01_02_010
-
-T-Slot:
-BP_01_02_011
 ----------------------
 Sliding Mechanism:
 BP_01_03_000
@@ -69,10 +64,10 @@ BP_01_03_000
 Lead Screw Nut:
 BP_01_02_001
 
-Nut connector to plate:
+Moving Sled:
 BP_01_03_002
 
-Bottom Plate:
+Rack Mount:
 BP_01_03_003
 
 T Slot Linear Bearing:
@@ -80,8 +75,11 @@ BP_01_03_004
 
 Gear Rack:
 BP_01_03_005
+
+5/16 Bolt:
+BP_01_03_006
 ----------------------
-Top Plate:
+Platform Assembly:
 BP_01_04_000
 
 Gear Pinion:
@@ -90,17 +88,29 @@ BP_01_04_001
 Top Plate:
 BP_01_04_002
 
-Fastner:
-BP_01_04_003
+1/4"-20 Bolt:
+BP_01_02_008
 
-Angle Brackett:
+1/4"-20 Flathead Bolt:
+BP_01_04_03
+
+1/4"-20 Nut:
+BP_01_02_009
+
+Small Corner Bracket:
 BP_01_04_004
-
-Nut:
-BP_01_04_005
 ----------------------
-Rack Adjustment:
+Sliding Mechanism Support:
 BP_01_05_000
 
+T Slot Travel:
+BP_01_05_01
 
+Spacer:
+BP_01_05_002
 
+1/4"-20 Bolt:
+BP_01_02_008
+
+1/4"-20 Nut:
+BP_01_02_009
