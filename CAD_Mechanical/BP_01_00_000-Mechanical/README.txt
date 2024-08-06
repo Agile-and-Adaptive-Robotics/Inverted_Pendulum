@@ -82,8 +82,11 @@ BP_01_03_006
 Platform Assembly:
 BP_01_04_000
 
-Gear Pinion:
-BP_01_04_001
+Gear Pinion Assembly:
+BP_01_04_001.0
+
+Gear Pinion Layers:
+BP_01_04_001.1-7 - folder
 
 Top Plate:
 BP_01_04_002
