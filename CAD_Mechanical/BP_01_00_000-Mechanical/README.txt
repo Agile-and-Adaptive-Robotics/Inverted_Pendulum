@@ -57,6 +57,9 @@ BP_01_02_008
 
 Fastener Nut:
 BP_01_02_009
+
+Gear Box Support:
+BP_01_02_010
 ----------------------
 Sliding Mechanism:
 BP_01_03_000
