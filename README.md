@@ -15,7 +15,5 @@ Note that this repo is for the pitured version of the Inverted Pendulum. The pre
   - [README](/datasheets/README.md)
 - [pics](/pics)
 - [SolidWorks](/SolidWorks)
-  - [README](/SolidWorks/README.txt)
-
 
 
