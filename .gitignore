@@ -1,0 +1,15 @@
+# Ignore temporary files
+~$*.SLDASM
+~$*.SLDPRT
+_$*.SLDASM
+_$*.SLDPRT
+*.asv
+~*.xlsx
+
+# Ignore dev files
+*.venv
+*.ini
+*.swj
+*.vscode
+*.zip
+*.DS_Store
